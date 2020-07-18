@@ -1,8 +1,12 @@
 package com.javasampleapproach.jdbcpostgresql.constructor;
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +16,11 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity.BodyBuilder;
 import org.springframework.http.ResponseEntity;
@@ -100,21 +106,22 @@ public class controlador {
 		ImageModel img = new ImageModel(files[0].getOriginalFilename(), files[0].getContentType(),
 				compressBytes(files[0].getBytes()));
 		servicio.insertarImagen(img);
-		System.out.println("si vale");
+		
 		/*imageRepository.save(img);
 		return ResponseEntity.status(HttpStatus.OK);*/
 	}
- 
-/*	@GetMapping(value = "nombre/{nombre}",produces = MediaType.IMAGE_PNG_VALUE)
-	public @ResponseBody byte[] getImage(@PathVariable("nombre") String imageName)  {
-		System.out.println("se busca la imagen "+imageName);
-		ImageModel img =servicio.cargarImagen(imageName);
-		if(img!=null) {
-			return img.getPicByte();	
-		}
-		return	null;
+
+ @RequestMapping(value = "nombre/{nombre}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+	public  ResponseEntity<byte[]> getImage(@PathVariable("nombre") String imageName) throws IOException  {
 		
-	}*/
+		ImageModel img =servicio.cargarImagen(imageName);
+		img.setPicByte(decompressBytes(img.getPicByte()));
+		System.out.println("se ENCUENTRA la imagen "+img.getName()+" con bytes "+img.getPicByte().length);
+		final HttpHeaders headers=new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_JPEG);
+		return new ResponseEntity<byte[]>(img.getPicByte(),headers,HttpStatus.CREATED);
+		
+	}
  
  private static final Map<String, MediaType> TYPE_MAP = new HashMap();
  
