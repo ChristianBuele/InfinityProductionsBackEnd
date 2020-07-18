@@ -1,5 +1,6 @@
 package com.javasampleapproach.jdbcpostgresql.dao.impl;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,18 +12,24 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.javasampleapproach.jdbcpostgresql.dao.CustomerDao;
 import com.javasampleapproach.jdbcpostgresql.model.Customer;
+import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
 import com.javasampleapproach.jdbcpostgresql.model.carrito;
+import com.javasampleapproach.jdbcpostgresql.model.productos;
+import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
 import com.javasampleapproach.jdbcpostgresql.model.usuario;
 
 @Repository
-public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
+public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Serializable{
 	
 	@Autowired 
 	DataSource dataSource;
@@ -137,6 +144,57 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
 				usuario.getId_carrito(),usuario.getNombre_usuario(),usuario.getApellido_usuario(),usuario.getCorreo_usuario(),usuario.getContrasenia_usuario(),usuario.getRol()});
 		return usuario;
 	}
+
+	@Override
+	public tarjeta ingresarTarjeta(tarjeta tarjeta) {
+		String sql ="insert into tarjeta (id_usuariot,num_tarjeta,nombre_tarjeta,mes_expiracion,anio_expiracion,ccv_tarjeta) " + 
+				"values (?,?,?,?,?,?)";
+		getJdbcTemplate().update(sql, new Object[]{tarjeta.getId_usuariot(),tarjeta.getNum_tarjeta(),tarjeta.getNombre_tarjeta(),tarjeta.getMes_expiracion(),tarjeta.getAnio_expiracion(),tarjeta.getCcv_tarjeta()});
+		
+		return tarjeta;
+		
+		
+	}
+
+	@Override
+	public productos ingresarProducto(productos producto) {
+		String sql ="insert into productos (precio,nombrer,imagen,descripcion,categoria) " + 
+				"values (?,?,?,?,?)";
+		getJdbcTemplate().update(sql, new Object[]{producto.getPrecio(),producto.getNombre(),producto.getImagen(),producto.getDescripcion(),producto.getCategoria()});
+		
+		return producto;
+	}
+
+	@Override
+	public void insertarImagen(ImageModel image) {
+		String sql="insert into imagen (nombre,tipo,imagen) values (?,?,?)";
+		getJdbcTemplate().update(sql,new Object[] {image.getName(),image.getType(),image.getPicByte()});
+		System.out.println("imagen ingresada creo");
+	}
+
+	@Override
+	public ImageModel cargarImagen(String id) {
+		String sql="select * from imagen where nombre = '"+id+"'";
+		System.out.println("Realiza la consulta con id "+id);
+		ImageModel x=new ImageModel();
+		x.setName(id);
+		ImageModel salida=new ImageModel();
+		ImageModel img=(ImageModel)getJdbcTemplate().query(sql,new ResultSetExtractor<ImageModel>() {
+			@Override
+			public ImageModel extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if(rs.next()) {
+					salida.setName(rs.getString("nombre"));
+					salida.setType(rs.getString("tipo"));
+					salida.setPicByte(rs.getBytes("imagen"));
+				}
+				return salida;
+			}
+		});
+		
+		System.out.println("Se Encuentra"+img.getName());
+		return img;
+	}
+	
 
 
 

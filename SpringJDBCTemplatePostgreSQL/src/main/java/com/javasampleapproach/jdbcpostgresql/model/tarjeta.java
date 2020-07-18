@@ -10,7 +10,6 @@ private int anio_expiracion;
 private int ccv_tarjeta;
 public tarjeta(int id_tarjeta, int id_usuariot, String num_tarjeta, String nombre_tarjeta, int mes_expiracion,
 		int anio_expiracion, int ccv_tarjeta) {
-	super();
 	this.id_tarjeta = id_tarjeta;
 	this.id_usuariot = id_usuariot;
 	this.num_tarjeta = num_tarjeta;

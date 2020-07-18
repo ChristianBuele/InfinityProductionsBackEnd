@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.javasampleapproach.jdbcpostgresql.dao.CustomerDao;
 import com.javasampleapproach.jdbcpostgresql.model.Customer;
+import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
 import com.javasampleapproach.jdbcpostgresql.model.carrito;
+import com.javasampleapproach.jdbcpostgresql.model.productos;
+import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
 import com.javasampleapproach.jdbcpostgresql.model.usuario;
 import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 
@@ -73,6 +76,35 @@ public class CustomerServiceImpl implements CustomerService{
 	public usuario insertarUsuario(usuario usuario) {
 		usuario us=customerDao.insertarUsuario(usuario);
 		return us;
+	}
+
+
+	@Override
+	public tarjeta ingresarTarjeta(tarjeta tarjeta) {
+		tarjeta t=customerDao.ingresarTarjeta(tarjeta);
+		return t;
+	}
+
+
+	@Override
+	public productos ingresarProducto(productos producto) {
+		productos x=customerDao.ingresarProducto(producto);
+		return x;
+	}
+
+
+	@Override
+	public void insertarImagen(ImageModel image) {
+		customerDao.insertarImagen(image);
+		
+	}
+
+
+	@Override
+	public ImageModel cargarImagen(String id) {
+		System.out.println("Ingresa a ver el id "+ id);
+		ImageModel img=customerDao.cargarImagen(id);
+		return img;
 	}
 
 }
