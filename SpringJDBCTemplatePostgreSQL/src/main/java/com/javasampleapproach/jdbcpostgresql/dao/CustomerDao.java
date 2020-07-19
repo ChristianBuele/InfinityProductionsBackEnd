@@ -1,12 +1,8 @@
 package com.javasampleapproach.jdbcpostgresql.dao;
 
 import java.util.List;
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
+
+import com.javasampleapproach.jdbcpostgresql.model.*;
 
 public interface CustomerDao {
 	void insert(Customer cus);
@@ -22,4 +18,7 @@ public interface CustomerDao {
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
 	ImageModel cargarImagen(String id);
+	factura insertarFactura(factura factura);
+	venta insertarVenta(venta venta);
+	carritoproducto insertarcarritoProducto(carritoproducto carritoproducto);
 }

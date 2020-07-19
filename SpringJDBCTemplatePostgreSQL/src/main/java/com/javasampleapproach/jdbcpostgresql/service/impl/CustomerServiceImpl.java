@@ -2,16 +2,11 @@ package com.javasampleapproach.jdbcpostgresql.service.impl;
 
 import java.util.List;
 
+import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javasampleapproach.jdbcpostgresql.dao.CustomerDao;
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
 import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 
 
@@ -107,4 +102,20 @@ public class CustomerServiceImpl implements CustomerService{
 		return img;
 	}
 
+	@Override
+	public factura insertarFactura(factura factura) {
+		factura x=customerDao.insertarFactura(factura);
+		return x;
+	}
+
+	@Override
+	public venta insertarVenta(venta venta) {
+		venta x=customerDao.insertarVenta(venta);
+		return x;
+	}
+	@Override
+	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
+		carritoproducto x=customerDao.insertarcarritoProducto(carritoproducto);
+		return x;
+	}
 }
