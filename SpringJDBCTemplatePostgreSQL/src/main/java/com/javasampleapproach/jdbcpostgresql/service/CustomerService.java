@@ -2,12 +2,7 @@ package com.javasampleapproach.jdbcpostgresql.service;
 
 import java.util.List;
 
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
+import com.javasampleapproach.jdbcpostgresql.model.*;
 
 public interface CustomerService {
 	void insert(Customer cus);
@@ -23,6 +18,12 @@ public interface CustomerService {
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
 	ImageModel cargarImagen(String id);
+<<<<<<< HEAD
 	boolean existeUsuario(String correo);
 	boolean contraseniaCorrecta(String correo,String contra);
+=======
+	factura insertarFactura(factura factura);
+	venta insertarVenta(venta venta);
+	carritoproducto insertarcarritoProducto(carritoproducto carritoproducto);
+>>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
 }

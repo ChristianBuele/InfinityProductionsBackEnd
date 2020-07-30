@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -21,12 +22,6 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.javasampleapproach.jdbcpostgresql.dao.CustomerDao;
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
 
 @Repository
 public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Serializable{
@@ -194,6 +189,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		System.out.println("Se Encuentra"+img.getName());
 		return img;
 	}
+<<<<<<< HEAD
 
 	@Override
 	public boolean existeUsuario(String correo) {
@@ -241,7 +237,31 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		}
 	}
 	
+=======
+>>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
 
+	@Override
+	public factura insertarFactura(factura factura) {
+		String sql="insert into factura (id_usuario,fecha_factura) values (?,?)";
+		assert getJdbcTemplate() != null;
+		getJdbcTemplate().update(sql, factura.getId_usuario(),factura.getFecha_factura());
+		return factura;
+	}
+
+	@Override
+	public venta insertarVenta(venta venta) {
+		String sql="insert into venta (id_factura,id_carrito,fecha_venta,fecha_evento,direccion_evento,direccion_entrega,precio_final) values (?,?,?,?,?,?,?)";
+		assert getJdbcTemplate() !=null;
+		getJdbcTemplate().update(sql,venta.getId_factura(),venta.getId_carrito(),venta.getFecha_venta(),venta.getFecha_evento(),venta.getDireccion_evento(),venta.getDireccion_Entrega(),venta.getPrecio_final());
+		return venta;
+	}
+	@Override
+	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
+		String sql="insert into carritoproducto (id_carrito,id_producto,fecha) values (?,?,?)";
+		assert getJdbcTemplate()!=null;
+		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha());
+		return carritoproducto;
+	}
 
 
 	

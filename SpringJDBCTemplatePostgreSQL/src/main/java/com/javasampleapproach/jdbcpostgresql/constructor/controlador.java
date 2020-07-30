@@ -18,6 +18,7 @@ import java.util.zip.Inflater;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 
+import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,12 +37,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
 import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 
 @RestController
@@ -190,6 +185,42 @@ public class controlador {
 		}
 		return outputStream.toByteArray();
 	}
+	@PostMapping("factura/")
+	public ResponseEntity<HashMap<String,String>> addFactura(@RequestBody factura factura){
+		HashMap<String,String> x=new HashMap<String,String>();
+		try {
+			factura f=servicio.insertarFactura(factura);
+			x.put("respuesta","true");
+			return ResponseEntity.ok(x);
+		}catch(Exception e) {
+			x.put("respuesta","false");
+			return ResponseEntity.ok(x);
+		}
+	}
+	@PostMapping("venta/")
+	public ResponseEntity<HashMap<String,String>> addVenta(@RequestBody venta venta){
+		HashMap<String,String> x=new HashMap<String,String>();
+		try {
+			venta v=servicio.insertarVenta(venta);
+			x.put("respuesta","true");
+			return ResponseEntity.ok(x);
+		}catch(Exception e) {
+			x.put("respuesta","false");
+			return ResponseEntity.ok(x);
+		}
+	}
+	@PostMapping("productocarrito/")
+	public ResponseEntity<HashMap<String,String>> addcarritoProducto(@RequestBody carritoproducto carritoproducto){
+		HashMap<String,String> x=new HashMap<String,String>();
+		try {
+			carritoproducto cp=servicio.insertarcarritoProducto(carritoproducto);
+			x.put("respuesta","true");
+			return ResponseEntity.ok(x);
+		}catch(Exception e) {
+			x.put("respuesta","false");
+			return ResponseEntity.ok(x);
+		}
+	}
 }
  
  
@@ -208,8 +239,22 @@ public class controlador {
     "rol": "usuario"
 }
  * 
- * 
- * 
+ * post venta
+ * {
+    "id_factura": 1,
+    "id_carrito":3,
+    "fecha_venta":"1/7/2020",
+    "fecha_evento":"3/8/2020",
+    "direccion_evento":"Hacienda",
+    "direccion_entrega":"Sebastian",
+    "precio_final": 150
+}
+* agregar carrito producto
+ * {
+    "id_carrito": 1,
+    "id_producto": 1,
+    "fecha":"1/7/2020"
+}
  * 
  * 
  * 
@@ -225,7 +270,11 @@ public class controlador {
     "contrasenia_usuario": "123asas",
     "rol": "usuario"
 }
- * 
+ * * factura post
+ * {
+    "id_usuario": 3,
+    "correo_usuario": "10/07/2020"
+}
  */
 
 /*si vale esto
@@ -252,8 +301,9 @@ public ResponseEntity<usuario> agregarUsuario(@PathVariable  int id ,@RequestPar
 }
  * 
  * http://localhost:8082/api/producto/tarjeta/ para agregar tarjeta
- * 
- * 
+ * http://localhost:8082/api/producto/factura/ agregar factura
+ * http://localhost:8082/api/producto/venta/ agregar venta dar mas espacio al varchar base de datos
+ * http://localhost:8082/api/producto/productocarrito/ agregar crrito producto
  */
 /*
  * 

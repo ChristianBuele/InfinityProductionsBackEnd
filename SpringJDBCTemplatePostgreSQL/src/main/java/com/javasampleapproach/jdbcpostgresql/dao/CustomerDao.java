@@ -1,12 +1,8 @@
 package com.javasampleapproach.jdbcpostgresql.dao;
 
 import java.util.List;
-import com.javasampleapproach.jdbcpostgresql.model.Customer;
-import com.javasampleapproach.jdbcpostgresql.model.ImageModel;
-import com.javasampleapproach.jdbcpostgresql.model.carrito;
-import com.javasampleapproach.jdbcpostgresql.model.productos;
-import com.javasampleapproach.jdbcpostgresql.model.tarjeta;
-import com.javasampleapproach.jdbcpostgresql.model.usuario;
+
+import com.javasampleapproach.jdbcpostgresql.model.*;
 
 public interface CustomerDao {
 	void insert(Customer cus);
@@ -23,6 +19,12 @@ public interface CustomerDao {
 	void insertarImagen(ImageModel image);
 	boolean existeUsuario(String correo);
 	ImageModel cargarImagen(String id);
+<<<<<<< HEAD
 	boolean contraseniaCorrecta(String correo,String contra);
 
+=======
+	factura insertarFactura(factura factura);
+	venta insertarVenta(venta venta);
+	carritoproducto insertarcarritoProducto(carritoproducto carritoproducto);
+>>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
 }
