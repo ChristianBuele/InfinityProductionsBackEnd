@@ -56,7 +56,7 @@ public class controlador {
 	 System.out.println("si  eentra");
  return ResponseEntity.ok(servicio.loadAllCustomer());
  }
- 
+ /*
  @GetMapping(value="crearcarrito/")
  public ResponseEntity<HashMap<String,Integer>> crearCarrito() {
 	 System.out.println("si  eentra a agegar carrito");
@@ -67,17 +67,47 @@ public class controlador {
 	 HashMap <String, Integer> map = new HashMap <String, Integer> ();
 	 map.put("idmax", idmax);
  return ResponseEntity.ok(map);
- }
+ }*/
 
- @PostMapping("usuario/")
- public ResponseEntity<usuario> agregarUsuarioPruebapost(@RequestBody usuario usuario){
-		System.out.println("entra a agregar usuario en post "+usuario.getCorreo_usuario());
-		usuario ingresado=servicio.insertarUsuario(usuario);
-		if(ingresado!=null) {
-			 return ResponseEntity.ok(ingresado);
-		}
-		return ResponseEntity.notFound().build();
+ public int crearCarrito() {
+	 System.out.println("si  eentra a agegar carrito");
+	 carrito c=new carrito();
+	 c.setTotal(0);
+	 carrito nuevo=servicio.insertarCarrito(c);
+	 int idmax=servicio.verMaxId();
+ return idmax;
  }
+ @PostMapping("usuario/")
+ public ResponseEntity<String> agregarUsuarioPruebapost(@RequestBody usuario usuario){
+		System.out.println("entra a agregar usuario en post "+usuario);
+		if(!servicio.existeUsuario(usuario.getCorreo_usuario())) {
+			usuario.setId_carrito(crearCarrito());
+			usuario ingresado=servicio.insertarUsuario(usuario);
+			if(ingresado!=null) {
+				 return ResponseEntity.ok("true");
+			}else {
+				 return ResponseEntity.ok("A ocurrido un error al registrar, Intente de nuevo");
+
+			}
+		}else {
+			return ResponseEntity.ok("El correo ya esta registrado");
+		}	
+ }
+ 
+ @PostMapping("login/")
+ public ResponseEntity<String> Login(@RequestBody usuario usuario){
+		System.out.println("entra a loguear usuario en post "+usuario);
+		if(servicio.existeUsuario(usuario.getCorreo_usuario())) {//si el correo del usuario esta en la base de datos
+			if(servicio.contraseniaCorrecta(usuario.getCorreo_usuario(), usuario.getContrasenia_usuario())) { ///verfica que la contrase;a sea correcta
+				return ResponseEntity.ok("Bienvenido");
+			}else {
+				return ResponseEntity.ok("Revise los datos");
+			}
+		}else {//si no existe el correo
+			return ResponseEntity.ok("No existe usuario");
+		}	
+ }
+ 
  @PostMapping("tarjeta/")
  public ResponseEntity<HashMap<String,String>> addTarjeta(@RequestBody tarjeta tarjeta){
 	 HashMap<String,String> x=new HashMap<String,String>();

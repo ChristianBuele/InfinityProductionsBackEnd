@@ -194,6 +194,52 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		System.out.println("Se Encuentra"+img.getName());
 		return img;
 	}
+
+	@Override
+	public boolean existeUsuario(String correo) {
+		String sql = "SELECT correo_usuario from usuario where correo_usuario = ?";
+		System.out.println("la consulta es "+sql );
+		try {
+		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<usuario>(){
+			@Override
+			public usuario mapRow(ResultSet rs, int rwNumber) throws SQLException {
+				usuario cus=new usuario();
+				cus.setCorreo_usuario(rs.getString("correo_usuario"));
+				
+				return cus;
+			}
+		});
+		return true;
+		}catch(Exception EmptyResultDataAccessException ) {
+			return false;
+		}
+		
+	}
+
+	@Override
+	public boolean contraseniaCorrecta(String correo,String contra) {
+		String sql = "SELECT contrasenia_usuario from usuario where correo_usuario = ?";
+		System.out.println("el correo "+correo+" paass "+contra );
+		try {
+		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<usuario>(){
+			@Override
+			public usuario mapRow(ResultSet rs, int rwNumber) throws SQLException {
+				usuario cus=new usuario();
+				cus.setContrasenia_usuario(rs.getString("contrasenia_usuario"));
+				return cus;
+			}
+		});
+		System.out.println("El usuario logueado es "+us);
+		if(us.getContrasenia_usuario().equals(contra)) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		}catch(Exception EmptyResultDataAccessException ) {
+			return false;
+		}
+	}
 	
 
 

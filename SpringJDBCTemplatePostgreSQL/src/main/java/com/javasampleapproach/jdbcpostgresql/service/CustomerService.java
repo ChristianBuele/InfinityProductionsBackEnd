@@ -23,4 +23,6 @@ public interface CustomerService {
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
 	ImageModel cargarImagen(String id);
+	boolean existeUsuario(String correo);
+	boolean contraseniaCorrecta(String correo,String contra);
 }

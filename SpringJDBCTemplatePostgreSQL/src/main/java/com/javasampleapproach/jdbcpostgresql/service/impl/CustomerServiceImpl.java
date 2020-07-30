@@ -107,4 +107,18 @@ public class CustomerServiceImpl implements CustomerService{
 		return img;
 	}
 
+
+	@Override
+	public boolean existeUsuario(String correo) {
+		
+		return customerDao.existeUsuario(correo);
+		
+	}
+
+
+	@Override
+	public boolean contraseniaCorrecta(String correo,String contra) {
+		return customerDao.contraseniaCorrecta(correo, contra);
+	}
+
 }

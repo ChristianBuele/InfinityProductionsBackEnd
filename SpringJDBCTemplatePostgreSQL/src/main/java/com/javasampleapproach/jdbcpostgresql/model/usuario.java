@@ -63,5 +63,8 @@ public String getRol() {
 public void setRol(String rol) {
 	this.rol = rol;
 }
-
+@Override
+public String toString() {
+	return "US:"+this.nombre_usuario+" Correo:"+correo_usuario+" PASS:"+this.contrasenia_usuario;
+}
 }

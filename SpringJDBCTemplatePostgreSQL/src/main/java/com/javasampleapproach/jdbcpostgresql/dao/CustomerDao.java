@@ -21,5 +21,8 @@ public interface CustomerDao {
 	tarjeta ingresarTarjeta(tarjeta tarjeta);
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
+	boolean existeUsuario(String correo);
 	ImageModel cargarImagen(String id);
+	boolean contraseniaCorrecta(String correo,String contra);
+
 }
