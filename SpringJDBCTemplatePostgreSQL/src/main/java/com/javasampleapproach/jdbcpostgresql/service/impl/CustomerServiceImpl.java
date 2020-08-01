@@ -102,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return img;
 	}
 
-<<<<<<< HEAD
+
 
 	@Override
 	public boolean existeUsuario(String correo) {
@@ -117,7 +117,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerDao.contraseniaCorrecta(correo, contra);
 	}
 
-=======
+
 	@Override
 	public factura insertarFactura(factura factura) {
 		factura x=customerDao.insertarFactura(factura);
@@ -134,5 +134,23 @@ public class CustomerServiceImpl implements CustomerService{
 		carritoproducto x=customerDao.insertarcarritoProducto(carritoproducto);
 		return x;
 	}
->>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
+
+
+	@Override
+	public boolean addProducto(productos producto) {
+		return customerDao.addProducto(producto);
+	}
+
+
+	@Override
+	public int getIdImagen() {
+		return customerDao.getIdImagen();
+	}
+
+
+	@Override
+	public List<productoDao> findAllProducts() {
+		return customerDao.findAllProducts();
+	}
+
 }

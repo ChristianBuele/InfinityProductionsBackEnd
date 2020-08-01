@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.springframework.http.RequestEntity.BodyBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,6 +90,18 @@ public class controlador {
 			return ResponseEntity.ok("El correo ya esta registrado");
 		}	
  }
+ @PostMapping("producto/")
+ public ResponseEntity<String> agregarProducto(@RequestBody productos producto){
+		
+	 int id_imagen=idImagenMaximo();
+	 producto.setImagen(id_imagen);
+	 servicio.addProducto(producto);
+	 return ResponseEntity.ok("true");
+}
+public int idImagenMaximo() {
+	 int idmax=servicio.getIdImagen();
+ return idmax;
+ }
  
  @PostMapping("login/")
  public ResponseEntity<String> Login(@RequestBody usuario usuario){
@@ -115,28 +129,46 @@ public class controlador {
 		 x.put("respuesta","false");
 		 return ResponseEntity.ok(x);
 	 }
- }
+ }/*
  @PostMapping("producto/")
  public ResponseEntity<HashMap<String,String>> addProducto(@RequestBody productos producto){
 	 System.out.println("ingresando producto");
 	 HashMap<String,String> x=new HashMap<String,String>();
-	 productos s=servicio.ingresarProducto(producto);
+	 productos s=servicio.ingresarProucto(producto);
 	 x.put("respuesta","true");
 	 return ResponseEntity.ok(x);
- }
- 
+ }*/
+ /*
  @PostMapping("/uploadFiles")
 	public void upladImage(@RequestParam("files") MultipartFile[] files) throws IOException {
-		System.out.println("Original Image Byte Size - " + files[0].getName());
+		System.out.println("Llegan"+files.length+" archivos" );
 		ImageModel img = new ImageModel(files[0].getOriginalFilename(), files[0].getContentType(),
 				compressBytes(files[0].getBytes()));
 		servicio.insertarImagen(img);
 		
-		/*imageRepository.save(img);
-		return ResponseEntity.status(HttpStatus.OK);*/
+		imageRepository.save(img);
+		return ResponseEntity.status(HttpStatus.OK);
 	}
-
- @RequestMapping(value = "nombre/{nombre}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+*/
+ @PostMapping("/uploadFiles")
+	public void upladImage(@ModelAttribute FormWrapper model) throws IOException {
+		System.out.println("Llega el nom "+model.getNombreProducto()+" con img "+model.getImagenProducto().getOriginalFilename());
+		ImageModel img = new ImageModel(model.getImagenProducto().getOriginalFilename(), model.getImagenProducto().getContentType(),
+				compressBytes(model.getImagenProducto().getBytes()));
+		servicio.insertarImagen(img);
+		System.out.println("se inserta imagen");
+		int id_imagen=idImagenMaximo();
+		System.out.println("se inserta imagen y el id es "+id_imagen);
+		productos producto=new productos();
+		producto.setNombre(model.getNombreProducto());
+		producto.setPrecio(model.getPrecioProducto());
+		producto.setCategoria(model.getCategoriaProducto());
+		producto.setDescripcion(model.getDesProducto());
+		producto.setImagen(id_imagen);
+		System.out.println("va a ingresar producto");
+		servicio.addProducto(producto);
+	}
+ @RequestMapping(value = "nombre/{nombre}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public  ResponseEntity<byte[]> getImage(@PathVariable("nombre") String imageName) throws IOException  {
 		
 		ImageModel img =servicio.cargarImagen(imageName);
@@ -145,9 +177,17 @@ public class controlador {
 		final HttpHeaders headers=new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(img.getPicByte(),headers,HttpStatus.CREATED);
-		
 	}
- 
+	
+
+ @RequestMapping(value="cargarProductos/", method = RequestMethod.GET)
+ public ResponseEntity<List<productoDao>> getAllProducts(){
+	 List<productoDao> lista=new ArrayList<productoDao>();
+	 System.out.println("buscando productos");
+	 lista=servicio.findAllProducts();
+	 System.out.println("se van "+lista.size()+" fotos");
+	 return ResponseEntity.ok(lista);
+ }
  private static final Map<String, MediaType> TYPE_MAP = new HashMap();
  
 

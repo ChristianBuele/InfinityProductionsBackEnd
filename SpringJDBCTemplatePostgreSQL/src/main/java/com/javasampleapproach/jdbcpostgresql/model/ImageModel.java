@@ -6,7 +6,7 @@ public class ImageModel implements Serializable {
 	private Long id;
 
 	private String name;
-
+	private int id_imagen;
 	private String type;
 	byte[] picByte;
 	public ImageModel() {
@@ -35,5 +35,12 @@ public class ImageModel implements Serializable {
 	public void setPicByte(byte[] picByte) {
 		this.picByte = picByte;
 	}
+	public int getId_imagen() {
+		return id_imagen;
+	}
+	public void setId_imagen(int id_imagen) {
+		this.id_imagen = id_imagen;
+	}
+	
 	
 }

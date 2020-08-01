@@ -19,12 +19,11 @@ public interface CustomerDao {
 	void insertarImagen(ImageModel image);
 	boolean existeUsuario(String correo);
 	ImageModel cargarImagen(String id);
-<<<<<<< HEAD
 	boolean contraseniaCorrecta(String correo,String contra);
-
-=======
 	factura insertarFactura(factura factura);
 	venta insertarVenta(venta venta);
 	carritoproducto insertarcarritoProducto(carritoproducto carritoproducto);
->>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
+	boolean addProducto(productos producto);
+	int getIdImagen();
+	List<productoDao> findAllProducts();
 }

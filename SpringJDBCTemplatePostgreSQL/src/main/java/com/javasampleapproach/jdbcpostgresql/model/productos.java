@@ -4,13 +4,13 @@ public class productos {
 	private int id_producto;
 	private double precio;
 	private String nombre;
-	private byte [] imagen;
+	private int imagen;
 	private String descripcion;
 	private String categoria;
 	public productos() {
 		
 	}
-	public productos(int id_producto, double precio, String nombre, byte[] imagen, String descripcion,
+	public productos(int id_producto, double precio, String nombre, int imagen, String descripcion,
 			String categoria) {
 		this.id_producto = id_producto;
 		this.precio = precio;
@@ -37,10 +37,10 @@ public class productos {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public byte[] getImagen() {
+	public int getImagen() {
 		return imagen;
 	}
-	public void setImagen(byte[] imagen) {
+	public void setImagen(int imagen) {
 		this.imagen = imagen;
 	}
 	public String getDescripcion() {

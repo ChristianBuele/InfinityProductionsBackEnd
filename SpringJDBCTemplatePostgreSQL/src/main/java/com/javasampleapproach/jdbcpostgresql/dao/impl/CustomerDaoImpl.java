@@ -153,8 +153,9 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public productos ingresarProducto(productos producto) {
-		String sql ="insert into productos (precio,nombrer,imagen,descripcion,categoria) " + 
+		String sql ="insert into productos (precio,nombre,id_imagen,descripcion,categoria) " + 
 				"values (?,?,?,?,?)";
+		System.out.println("se inserta la id"+producto.getImagen());
 		getJdbcTemplate().update(sql, new Object[]{producto.getPrecio(),producto.getNombre(),producto.getImagen(),producto.getDescripcion(),producto.getCategoria()});
 		
 		return producto;
@@ -162,14 +163,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public void insertarImagen(ImageModel image) {
-		String sql="insert into imagen (nombre,tipo,imagen) values (?,?,?)";
-		getJdbcTemplate().update(sql,new Object[] {image.getName(),image.getType(),image.getPicByte()});
+		String sql="insert into imagen (tipo,imagen) values (?,?)";
+		getJdbcTemplate().update(sql,new Object[] {image.getType(),image.getPicByte()});
 		System.out.println("imagen ingresada creo");
 	}
 
 	@Override
 	public ImageModel cargarImagen(String id) {
-		String sql="select * from imagen where nombre = '"+id+"'";
+		String sql="select * from imagen where id_imagen = '"+id+"'";
 		System.out.println("Realiza la consulta con id "+id);
 		ImageModel x=new ImageModel();
 		x.setName(id);
@@ -178,8 +179,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			@Override
 			public ImageModel extractData(ResultSet rs) throws SQLException, DataAccessException {
 				if(rs.next()) {
-					salida.setName(rs.getString("nombre"));
-					salida.setType(rs.getString("tipo"));
 					salida.setPicByte(rs.getBytes("imagen"));
 				}
 				return salida;
@@ -189,7 +188,48 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		System.out.println("Se Encuentra"+img.getName());
 		return img;
 	}
-<<<<<<< HEAD
+
+	@Override
+	public List<productoDao> findAllProducts() {
+		// TODO Auto-generated method stub
+		/*String sql="select imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+		List<productoDao> productos=(List<productoDao>)getJdbcTemplate().query(sql, new ResultSetExtractor<List<productoDao>>(){
+			@Override
+			public List<productoDao> extractData(ResultSet rs) throws SQLException, DataAccessException{
+				List<productoDao> lista = new ArrayList<>();
+				if(rs.next()) {
+					System.out.print("el producto es "+rs.getString("nombre")+""+rs.getRow());
+					productoDao pro=new productoDao();
+					pro.setImagen(rs.getBytes("imagen"));
+					pro.setPrecio(rs.getDouble("precio"));
+					pro.setNombre(rs.getString("nombre"));
+					pro.setDescripcion(rs.getString("descripcion"));
+					pro.setCategoria(rs.getString("categoria"));
+					lista.add(pro);
+				}
+				return lista;
+			}
+		});
+		return productos;*/
+		String sql = "select id_imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+		
+		List<productoDao> result = new ArrayList<>();
+		for(Map<String, Object> row:rows){
+			System.out.println("productos "+result.size());
+			productoDao cus=new productoDao();
+			cus.setImagen((Integer)row.get("id_imagen"));
+			cus.setPrecio((double)row.get("precio"));
+			cus.setNombre((String)row.get("nombre"));
+			cus.setDescripcion((String)row.get("descripcion"));
+			cus.setCategoria((String)row.get("categoria"));
+			result.add(cus);
+			
+		}
+		
+		return result;
+	}
+
 
 	@Override
 	public boolean existeUsuario(String correo) {
@@ -236,9 +276,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			return false;
 		}
 	}
-	
-=======
->>>>>>> 378f9a0a152dffcdd423fb9ffcaa692e17a5686a
+
 
 	@Override
 	public factura insertarFactura(factura factura) {
@@ -261,6 +299,24 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		assert getJdbcTemplate()!=null;
 		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha());
 		return carritoproducto;
+	}
+
+	@Override
+	public boolean addProducto(productos producto) {
+		// TODO Auto-generated method stub
+		String sql ="insert into productos (precio,nombre,id_imagen,descripcion,categoria) values (?,?,?,?,?)";
+		assert getJdbcTemplate() !=null;
+		getJdbcTemplate().update(sql,producto.getPrecio(),producto.getNombre(),producto.getImagen(),producto.getDescripcion(),producto.getCategoria());
+		return true;
+	}
+
+	@Override
+	public int getIdImagen() {
+		String sql = "SELECT MAX(id_imagen) FROM imagen";
+		
+		int total = getJdbcTemplate().queryForObject(sql, Integer.class);
+		System.out.println("el id max carrito es "+total);
+		return total;
 	}
 
 
