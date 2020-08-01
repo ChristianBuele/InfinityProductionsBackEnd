@@ -153,4 +153,10 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerDao.findAllProducts();
 	}
 
+
+	@Override
+	public int getIdUsuario(String correo) {
+		return customerDao.getIdUsuario(correo);
+	}
+
 }

@@ -229,6 +229,24 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		
 		return result;
 	}
+	@Override
+	public int getIdUsuario(String correo) {
+		
+		String sql="select id_usuario from usuario where correo_usuario=?";
+		try {
+			int id=(Integer)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<Integer>(){
+				@Override
+				public Integer mapRow(ResultSet rs, int rwNumber) throws SQLException {
+					
+					int id=rs.getInt("id_usuario");
+					return id;
+				}
+			});
+			return id;
+			}catch(Exception EmptyResultDataAccessException ) {
+				return -1;
+			}
+	}
 
 
 	@Override

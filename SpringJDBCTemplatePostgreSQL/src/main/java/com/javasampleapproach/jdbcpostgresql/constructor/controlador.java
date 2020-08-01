@@ -179,6 +179,12 @@ public int idImagenMaximo() {
 		return new ResponseEntity<byte[]>(img.getPicByte(),headers,HttpStatus.CREATED);
 	}
 	
+@PostMapping(value="correo/{correo}")
+public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo){
+	System.out.println("Entra a buscar "+correo);
+	int id=servicio.getIdUsuario(correo);
+	return ResponseEntity.ok(String.valueOf(id));
+}
 
  @RequestMapping(value="cargarProductos/", method = RequestMethod.GET)
  public ResponseEntity<List<productoDao>> getAllProducts(){

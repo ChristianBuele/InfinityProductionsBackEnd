@@ -26,4 +26,5 @@ public interface CustomerDao {
 	boolean addProducto(productos producto);
 	int getIdImagen();
 	List<productoDao> findAllProducts();
+	int getIdUsuario(String correo);
 }
