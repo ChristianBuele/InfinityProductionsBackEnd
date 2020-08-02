@@ -337,6 +337,50 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		return total;
 	}
 
+	@Override
+	public boolean addPreset(presets preset) {
+		try {
+			String sql="insert into presets (imagen,nombre,descripcion,archivo,categoria,precio) values (?,?,?,?,?,?)";
+			assert getJdbcTemplate() != null;
+			getJdbcTemplate().update(sql,preset.getImagenPreset().getBytes(),preset.getNombrePreset(),preset.getDescripcionPreset(),preset.getPreset().getBytes(),preset.getCategoriaPreset(),preset.getPrecioPreset());
+			return true;
+		}catch(Exception e) {
+			System.out.println("el error al insertar preset es \n"+e.getMessage()+"\n"+e.getCause());
+			return false;
+		}
+	}
+
+	@Override
+	public List<presets> getPreset(ArrayList<String> nombres) {
+		// TODO Auto-generated method stub
+		List<presets> listaPresets=new ArrayList<>();
+		for (int i = 0; i < nombres.size(); i++) {
+			String nombre=nombres.get(i);
+			String sql = "SELECT * from presets where nombre = ?";
+			try {
+			presets pre=(presets)getJdbcTemplate().queryForObject(sql, new Object[]{nombre}, new RowMapper<presets>(){
+				@Override
+				public presets mapRow(ResultSet rs, int rwNumber) throws SQLException {
+					presets preset=new presets();
+					preset.setId_preset(rs.getInt("id_preset"));
+					preset.setBytesImagen(rs.getBytes("imagen"));
+					preset.setNombrePreset(rs.getString("nombre")+".lrtemplate");
+					preset.setDescripcionPreset(rs.getString("descripcion"));
+					preset.setBytesPreset(rs.getBytes("archivo"));
+					preset.setCategoriaPreset("categoria");
+					preset.setPrecioPreset(rs.getDouble("precio"));
+					
+					return preset;
+				}
+			});
+			listaPresets.add(pre);
+			}catch(Exception EmptyResultDataAccessException ) {
+				return null;
+			}
+		}
+		return listaPresets;
+	}
+
 
 	
 }

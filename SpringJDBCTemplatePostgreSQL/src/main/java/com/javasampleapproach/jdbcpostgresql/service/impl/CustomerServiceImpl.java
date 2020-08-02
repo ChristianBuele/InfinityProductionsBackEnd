@@ -1,5 +1,6 @@
 package com.javasampleapproach.jdbcpostgresql.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.javasampleapproach.jdbcpostgresql.model.*;
@@ -19,7 +20,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public void insert(Customer cus) {
 		customerDao.insert(cus);
 	}
-	
+	@Override
+	public List<presets> getPreset(ArrayList<String> nombres){
+		return customerDao.getPreset(nombres);
+	}
 	
 	@Override
 	public void insertBatch(List<Customer> customers) {
@@ -157,6 +161,12 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public int getIdUsuario(String correo) {
 		return customerDao.getIdUsuario(correo);
+	}
+
+
+	@Override
+	public boolean addPreset(presets preset) {
+		return customerDao.addPreset(preset);
 	}
 
 }

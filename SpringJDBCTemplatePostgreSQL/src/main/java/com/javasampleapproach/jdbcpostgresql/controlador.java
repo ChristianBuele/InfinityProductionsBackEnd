@@ -2,11 +2,15 @@ package com.javasampleapproach.jdbcpostgresql;
 
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.zip.Inflater;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 
 import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +58,44 @@ public class controlador {
 	 System.out.println("si  eentra");
  return ResponseEntity.ok(servicio.loadAllCustomer());
  }
+ 
+
+ @RequestMapping("files/{nombreArchivo}")
+	@ResponseBody
+	public void descargar(@PathVariable("nombreArchivo") String nombreArchivo,HttpServletResponse response) {
+	 System.out.println("Entra a descargar");
+	 try {
+		Files.deleteIfExists(Paths.get("presets.zip"));
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+		ArrayList<String> lista=new ArrayList<>();
+		lista.add("Portrait Saturation");
+		lista.add("Vintage Cold");
+		List<presets> presetsLista=servicio.getPreset(lista);
+		compresor comprimir=new compresor(presetsLista);
+		comprimir.comprimir();
+		
+		response.setContentType("application/zip");
+		response.setHeader("Content-Disposition","attachment; filename=presets.zip");
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		try {
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			FileInputStream fis= new FileInputStream("presets.zip");
+			int len;
+			byte [] buf = new byte[1024];
+			while ((len=fis.read(buf))>0) {
+				bos.write(buf,0,len);
+			}
+			bos.close();
+			response.flushBuffer();
+			fis.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		comprimir.start();
+	}
  /*
  @GetMapping(value="crearcarrito/")
  public ResponseEntity<HashMap<String,Integer>> crearCarrito() {
@@ -170,7 +213,6 @@ public int idImagenMaximo() {
 	}
  @RequestMapping(value = "nombre/{nombre}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public  ResponseEntity<byte[]> getImage(@PathVariable("nombre") String imageName) throws IOException  {
-		
 		ImageModel img =servicio.cargarImagen(imageName);
 		img.setPicByte(decompressBytes(img.getPicByte()));
 		System.out.println("se ENCUENTRA la imagen "+img.getName()+" con bytes "+img.getPicByte().length);
@@ -178,6 +220,21 @@ public int idImagenMaximo() {
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(img.getPicByte(),headers,HttpStatus.CREATED);
 	}
+	
+	@PostMapping(value="preset/")
+	public ResponseEntity<String> addPreset(@ModelAttribute presets model) throws IOException{
+		System.out.println("entra a agregar preset");
+		System.out.println("Llega la foto "+model.getImagenPreset().getOriginalFilename()+" y el archivo "+model.getPreset().getOriginalFilename());
+		boolean band=servicio.addPreset(model);
+		if(band) {
+			return ResponseEntity.ok("Preset Ingresado");
+		}
+		return ResponseEntity.ok("Error al ingresar Preset");
+	
+	}
+	
+
+	
 	
 @PostMapping(value="correo/{correo}")
 public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo){

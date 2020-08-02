@@ -1,5 +1,6 @@
 package com.javasampleapproach.jdbcpostgresql.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.javasampleapproach.jdbcpostgresql.model.*;
@@ -27,4 +28,8 @@ public interface CustomerDao {
 	int getIdImagen();
 	List<productoDao> findAllProducts();
 	int getIdUsuario(String correo);
-}
+	boolean addPreset(presets preset);
+	List<presets> getPreset(ArrayList<String> ids);
+	
+		
+	}
