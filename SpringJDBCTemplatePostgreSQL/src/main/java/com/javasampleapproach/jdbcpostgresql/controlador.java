@@ -1,4 +1,4 @@
-package com.javasampleapproach.jdbcpostgresql.constructor;
+package com.javasampleapproach.jdbcpostgresql;
 
 
 import java.awt.image.BufferedImage;
