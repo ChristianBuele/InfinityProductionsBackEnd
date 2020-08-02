@@ -24,7 +24,22 @@ public class CustomerServiceImpl implements CustomerService{
 	public List<presets> getPreset(ArrayList<String> nombres){
 		return customerDao.getPreset(nombres);
 	}
-	
+
+	@Override
+	public List<tarjeta> listAllTarjeta(int id) {
+		return customerDao.findTarjeta(id);
+	}
+
+	@Override
+	public List<eventosDao> listarEventos() {
+		return customerDao.listarEventos();
+	}
+
+	@Override
+	public List<facturaDao> listarFacturas(int id) {
+		return customerDao.listarFacturas(id);
+	}
+
 	@Override
 	public void insertBatch(List<Customer> customers) {
 		customerDao.inserBatch(customers);
