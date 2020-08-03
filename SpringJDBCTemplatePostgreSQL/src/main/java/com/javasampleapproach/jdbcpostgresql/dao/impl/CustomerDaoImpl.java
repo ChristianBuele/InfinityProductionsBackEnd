@@ -431,7 +431,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 
 	
-=======
+
 	public List<tarjeta> findTarjeta(int id) {
 		String sql = "select * from tarjeta where id_usuariot= ?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
@@ -487,6 +487,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		}
 		return result;
 	}
->>>>>>> 630dca7c8d853965167c6af6118ba34de4fc7c1d
+
 }
 
