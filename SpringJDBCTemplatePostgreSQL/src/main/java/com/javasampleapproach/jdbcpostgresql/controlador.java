@@ -211,6 +211,7 @@ public int idImagenMaximo() {
 		System.out.println("va a ingresar producto");
 		servicio.addProducto(producto);
 	}
+ 
  @RequestMapping(value = "nombre/{nombre}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
 	public  ResponseEntity<byte[]> getImage(@PathVariable("nombre") String imageName) throws IOException  {
 		ImageModel img =servicio.cargarImagen(imageName);
