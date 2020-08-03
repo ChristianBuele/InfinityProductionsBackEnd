@@ -24,8 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.javasampleapproach.jdbcpostgresql.model.*;
 
+import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -387,6 +389,19 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		Date fechaDate = null;
 		fechaDate = formato.parse(fecha);
 		return fechaDate;
+	}
+	@RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<InputStreamResource> citiesReport() throws IOException {
+		List<eventosDao> cities = servicio.listarEventos();
+		ByteArrayInputStream bis = ListarEventosPdf.eventosReport(cities);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Disposition", "inline; filename=citiesreport.pdf");
+		return ResponseEntity
+				.ok()
+				.headers(headers)
+				.contentType(MediaType.APPLICATION_PDF)
+				.body(new InputStreamResource(bis));
 	}
 }
  
