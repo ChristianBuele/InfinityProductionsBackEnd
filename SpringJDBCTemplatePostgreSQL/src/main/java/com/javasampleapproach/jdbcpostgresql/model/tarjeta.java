@@ -8,6 +8,7 @@ private String nombre_tarjeta;
 private int mes_expiracion;
 private int anio_expiracion;
 private int ccv_tarjeta;
+private double saldo;
 public tarjeta(int id_tarjeta, int id_usuariot, String num_tarjeta, String nombre_tarjeta, int mes_expiracion,
 		int anio_expiracion, int ccv_tarjeta) {
 	this.id_tarjeta = id_tarjeta;
@@ -17,6 +18,12 @@ public tarjeta(int id_tarjeta, int id_usuariot, String num_tarjeta, String nombr
 	this.mes_expiracion = mes_expiracion;
 	this.anio_expiracion = anio_expiracion;
 	this.ccv_tarjeta = ccv_tarjeta;
+}
+public double getSaldo() {
+	return saldo;
+}
+public void setSaldo(double saldo) {
+	this.saldo = saldo;
 }
 public tarjeta() {
 	

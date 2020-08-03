@@ -444,6 +444,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			tar.setMes_expiracion((Integer)row.get("mes_expiracion"));
 			tar.setAnio_expiracion((Integer)row.get("anio_expiracion"));
 			tar.setCcv_tarjeta((Integer)row.get("ccv_tarjeta"));
+			tar.setSaldo((double)row.get("saldo"));
 			result.add(tar);
 		}
 		return result;

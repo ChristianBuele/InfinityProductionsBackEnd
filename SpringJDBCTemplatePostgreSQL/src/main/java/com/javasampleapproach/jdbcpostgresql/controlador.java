@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -165,7 +166,11 @@ public int idImagenMaximo() {
  @PostMapping("tarjeta/")
  public ResponseEntity<HashMap<String,String>> addTarjeta(@RequestBody tarjeta tarjeta){
 	 HashMap<String,String> x=new HashMap<String,String>();
-	try {	System.out.println("entra a agregar tarjeta en post "+tarjeta.getNombre_tarjeta());
+	try {	
+		System.out.println("entra a agregar tarjeta en post "+tarjeta.getNombre_tarjeta());
+		DecimalFormat formato1 = new DecimalFormat("#.00");
+		String nuevoSaldo=formato1.format(Math.random()*15000);
+		tarjeta.setSaldo(Double.parseDouble(nuevoSaldo));
 		tarjeta t=servicio.ingresarTarjeta(tarjeta);
 		 
 	 x.put("respuesta","true");
@@ -276,8 +281,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	 System.out.println("se van "+lista.size()+" fotos");
 	 return ResponseEntity.ok(lista);
  }
- private static final Map<String, MediaType> TYPE_MAP = new HashMap();
- 
+
 
 	public static byte[] compressBytes(byte[] data){
 		Deflater deflater = new Deflater();
@@ -354,6 +358,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			return ResponseEntity.ok(x);
 		}
 	}
+	
+	
 	@GetMapping("listarEventos/")
 	public ResponseEntity<List<eventosDao>> getEventos(){
 		List<eventosDao> eventos=new ArrayList<>();
@@ -403,8 +409,9 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				.contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
 	}
-	@GetMapping("listarTarjetas/{id}")
+	@PostMapping("listarTarjetas/{id}")
 	public ResponseEntity<List<tarjeta>> getTarjeta(@PathVariable("id")Integer id) throws ParseException {
+		System.out.println("listando las terjetas de "+id);
 		List<tarjeta> tarjetas=new ArrayList<>();
 		tarjetas=servicio.listAllTarjeta(id);
 		return ResponseEntity.ok(tarjetas);
