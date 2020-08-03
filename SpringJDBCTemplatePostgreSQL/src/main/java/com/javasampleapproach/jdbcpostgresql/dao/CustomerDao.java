@@ -30,11 +30,13 @@ public interface CustomerDao {
 	int getIdUsuario(String correo);
 	boolean addPreset(presets preset);
 	List<presets> getPreset(ArrayList<String> ids);
-
 	List<presets> findPremiumPresets();
 	List<presets> findFreePresets();
+<<<<<<< HEAD
 		
 	
+=======
+>>>>>>> d8313065230eeb0d965196e9de1bf96ac36f0f9c
 	List<tarjeta> findTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);

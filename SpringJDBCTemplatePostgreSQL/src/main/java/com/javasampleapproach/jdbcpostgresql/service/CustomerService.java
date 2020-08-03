@@ -30,11 +30,8 @@ public interface CustomerService {
 	int getIdUsuario(String correo);
 	boolean addPreset(presets preset);
 	List<presets> getPreset(ArrayList<String> nombres);
-
 	List<presets> findPremiumPresets();
 	List<presets> findFreePresets();
-		
-
 	List<tarjeta> listAllTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
