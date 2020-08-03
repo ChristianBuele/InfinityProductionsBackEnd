@@ -38,5 +38,5 @@ public interface CustomerService {
 	List<tarjeta> listAllTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
->>>>>>> 630dca7c8d853965167c6af6118ba34de4fc7c1d
+
 }
