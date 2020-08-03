@@ -411,6 +411,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	@PostMapping("listarTarjetas/{id}")
 	public ResponseEntity<List<tarjeta>> getTarjeta(@PathVariable("id")Integer id) throws ParseException {
+		System.out.println("listando las terjetas de "+id);
 		List<tarjeta> tarjetas=new ArrayList<>();
 		tarjetas=servicio.listAllTarjeta(id);
 		return ResponseEntity.ok(tarjetas);
