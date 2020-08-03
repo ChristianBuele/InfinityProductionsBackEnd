@@ -19,10 +19,8 @@ public interface CustomerService {
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
 	ImageModel cargarImagen(String id);
-
 	boolean existeUsuario(String correo);
 	boolean contraseniaCorrecta(String correo,String contra);
-
 	factura insertarFactura(factura factura);
 	venta insertarVenta(venta venta);
 	carritoproducto insertarcarritoProducto(carritoproducto carritoproducto);
@@ -32,7 +30,13 @@ public interface CustomerService {
 	int getIdUsuario(String correo);
 	boolean addPreset(presets preset);
 	List<presets> getPreset(ArrayList<String> nombres);
+<<<<<<< HEAD
 	List<presets> findPremiumPresets();
 	List<presets> findFreePresets();
 		
+=======
+	List<tarjeta> listAllTarjeta(int id);
+	List<eventosDao> listarEventos();
+	List<facturaDao> listarFacturas(int id);
+>>>>>>> 630dca7c8d853965167c6af6118ba34de4fc7c1d
 }

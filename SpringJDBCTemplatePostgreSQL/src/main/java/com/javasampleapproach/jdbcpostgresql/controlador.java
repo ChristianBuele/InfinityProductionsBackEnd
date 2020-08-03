@@ -11,11 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -352,6 +350,42 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			x.put("respuesta","false");
 			return ResponseEntity.ok(x);
 		}
+	}
+	@GetMapping("listarEventos/")
+	public ResponseEntity<List<eventosDao>> getEventos(){
+		List<eventosDao> eventos=new ArrayList<>();
+		eventos=servicio.listarEventos();
+		return ResponseEntity.ok(eventos);
+	}
+	@GetMapping("listarEventosProximos/")
+	public ResponseEntity<List<eventosDao>> getEventosProximos() throws ParseException {
+		List<eventosDao> eventos=new ArrayList<>();
+		List<eventosDao> eventosProximos=new ArrayList<>();
+		eventos=servicio.listarEventos();
+		Date fecha,fechaActual;
+		java.util.Date fechaSimple = new Date();
+		fechaActual=ParseFecha(new SimpleDateFormat("dd/MM/yyyy").format(fechaSimple));
+		for (int i=0;i<eventos.size();i++){
+			fecha=ParseFecha(eventos.get(i).getFechaEvento());
+			if(fechaActual.compareTo(fecha)>0) {
+				eventosDao pro=new eventosDao();
+				pro=eventos.get(i);
+				eventosProximos.add(pro);
+			}
+		}
+		return ResponseEntity.ok(eventosProximos);
+	}
+	@GetMapping("listarFacturas/{id}")
+	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {
+		List<facturaDao> facturas=new ArrayList<>();
+		facturas=servicio.listarFacturas(id);
+		return ResponseEntity.ok(facturas);
+	}
+	public static Date ParseFecha(String fecha) throws java.text.ParseException {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		Date fechaDate = null;
+		fechaDate = formato.parse(fecha);
+		return fechaDate;
 	}
 }
  

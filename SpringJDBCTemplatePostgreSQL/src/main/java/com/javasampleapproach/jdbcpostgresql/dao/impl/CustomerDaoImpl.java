@@ -383,6 +383,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<presets> findPremiumPresets() {
 		List<presets> listaPresets=new ArrayList<>();
 			String sql = "SELECT * from presets where categoria = 'Premium'";
@@ -430,5 +431,62 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 
 	
+=======
+	public List<tarjeta> findTarjeta(int id) {
+		String sql = "select * from tarjeta where id_usuariot= ?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
+		List<tarjeta> result = new ArrayList<tarjeta>();
+		for(Map<String, Object> row:rows){
+			tarjeta tar=new tarjeta();
+			tar.setId_tarjeta((Integer) row.get("id_tarjeta"));
+			tar.setNum_tarjeta((String) row.get("num_tarjeta"));
+			tar.setNombre_tarjeta((String) row.get("nombre_tarjeta"));
+			tar.setMes_expiracion((Integer)row.get("mes_expiracion"));
+			tar.setAnio_expiracion((Integer)row.get("anio_expiracion"));
+			tar.setCcv_tarjeta((Integer)row.get("ccv_tarjeta"));
+			result.add(tar);
+		}
+		return result;
+	}
+	@Override
+	public List<eventosDao> listarEventos() {
+		String sql = "select nombre_usuario, apellido_usuario,fecha_evento, direccion_evento, direccion_entrega, nombre, categoria\n" +
+				"from factura join usuario using (id_usuario) join venta v using\n" +
+				"(id_factura) join carritoproducto cv on v.id_carrito = cv.id_carrito\n" +
+				"join productos pr on cv.id_producto = pr.id_producto;";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+		List<eventosDao> result = new ArrayList<eventosDao>();
+		for(Map<String, Object> row:rows){
+			eventosDao evento=new eventosDao();
+			evento.setNombreUsuario((String)row.get("nombre_usuario"));
+			evento.setQpellidoUsuario((String)row.get("apellido_usuario"));
+			evento.setFechaEvento((String)row.get("fecha_evento"));
+			evento.setDireccionEntrega((String)row.get("direccion_evento"));
+			evento.setNombreProducto((String)row.get("nombre"));
+			evento.setCategoriaProducto((String)row.get("categoria"));
+			evento.setPrecio_final((Double)row.get("precio_final"));
+			result.add(evento);
+		}
+		return result;
+	}
+	@Override
+	public List<facturaDao> listarFacturas(int id) {
+		String sql="select id_factura, fecha_factura, precio_final,nombre\n" +
+				"from factura join usuario using (id_usuario) join venta v using\n" +
+				"(id_factura) join carritoproducto cv on v.id_carrito = cv.id_carrito\n" +
+				"join productos pr on cv.id_producto = pr.id_producto where id_usuario= ?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
+		List<facturaDao> result = new ArrayList<facturaDao>();
+		for(Map<String, Object> row:rows){
+			facturaDao fac=new facturaDao();
+			fac.setId_factura((Integer)row.get("id_factura"));
+			fac.setFecha_factura((String)row.get("fecha_factura"));
+			fac.setNombre_producto((String)row.get("nombre"));
+			fac.setPrecio_factura((Double)row.get("precio_final"));
+			result.add(fac);
+		}
+		return result;
+	}
+>>>>>>> 630dca7c8d853965167c6af6118ba34de4fc7c1d
 }
 
