@@ -486,6 +486,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			result.add(fac);
 		}
 		return result;
+		
 	}
 
 }
