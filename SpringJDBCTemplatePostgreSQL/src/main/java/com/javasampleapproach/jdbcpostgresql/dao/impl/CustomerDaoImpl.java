@@ -490,5 +490,27 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		
 	}
 
+	@Override
+	public List<preventa> listarPreventas(int id_usuario, int id_tarjeta) {
+		String sql="select id_tarjeta, id_usuario, num_tarjeta, nombre_usuario, \n" +
+				"apellido_usuario, id_carrito, id_factura, fecha_factura\n" +
+				"from usuario us join tarjeta tr on us.id_usuario=tr.id_usuariot\n" +
+				"join factura fr using (id_usuario) where id_usuario= ? and id_tarjeta= ? and estado='pendiente'";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id_usuario,id_tarjeta);
+		List<preventa> result = new ArrayList<preventa>();
+		for(Map<String, Object> row:rows){
+			preventa pre=new preventa();
+			pre.setId_tarjeta((Integer)row.get("id_tarjeta"));
+			pre.setId_usuario((Integer)row.get("id_usuario"));
+			pre.setNombre_usuario((String)row.get("nombre_usuario"));
+			pre.setApellido_usuario((String)row.get("apellido_usuario"));
+			pre.setId_carrito((Integer)row.get("id_carrito"));
+			pre.setId_factura((Integer)row.get("id_factura"));
+			pre.setFecha_factura((String)row.get("fecha_factura"));
+			result.add(pre);
+		}
+		return result;
+	}
+
 }
 

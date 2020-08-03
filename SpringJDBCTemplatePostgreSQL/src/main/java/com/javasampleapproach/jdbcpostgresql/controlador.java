@@ -409,6 +409,15 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		tarjetas=servicio.listAllTarjeta(id);
 		return ResponseEntity.ok(tarjetas);
 	}
+	@PostMapping("listarPreventa/{id}")
+	public ResponseEntity<List<preventa>> getpreventa(@PathVariable("id")String id){
+		String[] parts = id.split(",");
+		int idUs=Integer.valueOf(parts[0]);
+		int idTar=Integer.valueOf(parts[1]);
+		List<preventa> preventas = new ArrayList<>();
+		preventas=servicio.listarpreventa(idUs,idTar);
+		return ResponseEntity.ok(preventas);
+	}
 }
  
  

@@ -35,5 +35,5 @@ public interface CustomerDao {
 	List<tarjeta> findTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
-
+	List<preventa> listarPreventas(int id_usuario,int id_tarjeta);
 	}
