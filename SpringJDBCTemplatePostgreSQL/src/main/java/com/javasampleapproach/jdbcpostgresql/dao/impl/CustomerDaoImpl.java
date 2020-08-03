@@ -450,7 +450,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public List<eventosDao> listarEventos() {
-		String sql = "select nombre_usuario, apellido_usuario,fecha_evento, direccion_evento, direccion_entrega, nombre, categoria\n" +
+		String sql = "select DISTINCT nombre_usuario, apellido_usuario,fecha_evento, direccion_evento, direccion_entrega, nombre, categoria,precio_final\n" +
 				"from factura join usuario using (id_usuario) join venta v using\n" +
 				"(id_factura) join carritoproducto cv on v.id_carrito = cv.id_carrito\n" +
 				"join productos pr on cv.id_producto = pr.id_producto;";
@@ -462,6 +462,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			evento.setQpellidoUsuario((String)row.get("apellido_usuario"));
 			evento.setFechaEvento((String)row.get("fecha_evento"));
 			evento.setDireccionEntrega((String)row.get("direccion_evento"));
+			evento.setDireccionEvento((String)row.get("direccion_entrega"));
 			evento.setNombreProducto((String)row.get("nombre"));
 			evento.setCategoriaProducto((String)row.get("categoria"));
 			evento.setPrecio_final((Double)row.get("precio_final"));
@@ -471,7 +472,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public List<facturaDao> listarFacturas(int id) {
-		String sql="select id_factura, fecha_factura, precio_final,nombre\n" +
+		String sql="select DISTINCT id_factura, fecha_factura, precio_final,nombre\n" +
 				"from factura join usuario using (id_usuario) join venta v using\n" +
 				"(id_factura) join carritoproducto cv on v.id_carrito = cv.id_carrito\n" +
 				"join productos pr on cv.id_producto = pr.id_producto where id_usuario= ?";
