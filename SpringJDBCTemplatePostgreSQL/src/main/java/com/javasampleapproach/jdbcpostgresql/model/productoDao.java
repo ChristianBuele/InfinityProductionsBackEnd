@@ -6,11 +6,12 @@ public class productoDao {
     private String descripcion;
     private double precio;
     private String categoria;
-	public int getImagen() {
+    private byte[] imagen;
+	public int getId_imagen() {
 		return id_imagen;
 	}
-	public void setImagen(int imagen) {
-		this.id_imagen = imagen;
+	public void setId_imagen(int id_imagen) {
+		this.id_imagen = id_imagen;
 	}
 	public String getNombre() {
 		return nombre;
@@ -36,6 +37,13 @@ public class productoDao {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-	
+	public byte[] getImagen() {
+		return imagen;
+	}
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
+    
+
     
 }

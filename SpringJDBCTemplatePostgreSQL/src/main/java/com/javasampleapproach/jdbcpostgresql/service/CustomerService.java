@@ -32,4 +32,7 @@ public interface CustomerService {
 	int getIdUsuario(String correo);
 	boolean addPreset(presets preset);
 	List<presets> getPreset(ArrayList<String> nombres);
+	List<presets> findPremiumPresets();
+	List<presets> findFreePresets();
+		
 }

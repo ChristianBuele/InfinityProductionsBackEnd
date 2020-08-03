@@ -211,18 +211,19 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			}
 		});
 		return productos;*/
-		String sql = "select id_imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		
 		List<productoDao> result = new ArrayList<>();
 		for(Map<String, Object> row:rows){
 			System.out.println("productos "+result.size());
 			productoDao cus=new productoDao();
-			cus.setImagen((Integer)row.get("id_imagen"));
+			cus.setId_imagen((Integer)row.get("id_imagen"));
 			cus.setPrecio((double)row.get("precio"));
 			cus.setNombre((String)row.get("nombre"));
 			cus.setDescripcion((String)row.get("descripcion"));
 			cus.setCategoria((String)row.get("categoria"));
+			cus.setImagen((byte[])row.get("imagen"));
 			result.add(cus);
 			
 		}
@@ -378,6 +379,52 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				return null;
 			}
 		}
+		return listaPresets;
+	}
+
+	@Override
+	public List<presets> findPremiumPresets() {
+		List<presets> listaPresets=new ArrayList<>();
+			String sql = "SELECT * from presets where categoria = 'Premium'";
+			List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+			
+			List<productoDao> result = new ArrayList<>();
+			for(Map<String, Object> row:rows){
+				System.out.println("productos "+result.size());
+				productoDao cus=new productoDao();
+				presets preset=new presets();
+				preset.setId_preset((Integer)row.get("id_preset"));
+				preset.setBytesImagen((byte [])row.get("imagen"));
+				preset.setNombrePreset((String)row.get("nombre"));
+				preset.setDescripcionPreset((String)row.get("descripcion"));
+				preset.setCategoriaPreset("Premium");
+				preset.setPrecioPreset((double)row.get("precio"));
+				listaPresets.add(preset);
+			}
+			
+			return listaPresets;
+	}
+
+	@Override
+	public List<presets> findFreePresets() {
+		List<presets> listaPresets=new ArrayList<>();
+		String sql = "SELECT * from presets where categoria = 'Free'";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+		
+		List<productoDao> result = new ArrayList<>();
+		for(Map<String, Object> row:rows){
+			System.out.println("productos "+result.size());
+			productoDao cus=new productoDao();
+			presets preset=new presets();
+			preset.setId_preset((Integer)row.get("id_preset"));
+			preset.setBytesImagen((byte [])row.get("imagen"));
+			preset.setNombrePreset((String)row.get("nombre"));
+			preset.setDescripcionPreset((String)row.get("descripcion"));
+			preset.setCategoriaPreset("Premium");
+			preset.setPrecioPreset(0.0);
+			listaPresets.add(preset);
+		}
+		
 		return listaPresets;
 	}
 

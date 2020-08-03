@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javasampleapproach.jdbcpostgresql.model.*;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -220,6 +222,24 @@ public int idImagenMaximo() {
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		return new ResponseEntity<byte[]>(img.getPicByte(),headers,HttpStatus.CREATED);
 	}
+@PostMapping(value="presets/premium/")
+public ResponseEntity<List<presets>> getPremiumPresets(){
+	System.out.println("Entra a cargar presets preimum");
+	List<presets> presetsLista=servicio.findPremiumPresets();
+	
+	System.out.println("termina de cargar premum");
+	return ResponseEntity.ok(presetsLista);
+	
+}
+@PostMapping(value="presets/free/")
+public ResponseEntity<List<presets>> getFreePresets(){
+	System.out.println("Entra a cargar presets free");
+	List<presets> presetsLista=servicio.findFreePresets();
+	
+	System.out.println("termina de cargar free");
+	return ResponseEntity.ok(presetsLista);
+	
+}
 	
 	@PostMapping(value="preset/")
 	public ResponseEntity<String> addPreset(@ModelAttribute presets model) throws IOException{
@@ -248,6 +268,10 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	 List<productoDao> lista=new ArrayList<productoDao>();
 	 System.out.println("buscando productos");
 	 lista=servicio.findAllProducts();
+	 for(int i=0;i<lista.size();i++) {
+		 lista.get(i).setImagen(decompressBytes(lista.get(i).getImagen()));
+		 lista.get(i).setImagen(lista.get(i).getImagen());
+	 }
 	 System.out.println("se van "+lista.size()+" fotos");
 	 return ResponseEntity.ok(lista);
  }
@@ -311,6 +335,11 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			x.put("respuesta","false");
 			return ResponseEntity.ok(x);
 		}
+	}
+	public byte[] codifcarBase64(byte[] datos) {
+		Base64 codec=new Base64();
+		byte [] encodec=codec.encode(datos);
+		return encodec;
 	}
 	@PostMapping("productocarrito/")
 	public ResponseEntity<HashMap<String,String>> addcarritoProducto(@RequestBody carritoproducto carritoproducto){

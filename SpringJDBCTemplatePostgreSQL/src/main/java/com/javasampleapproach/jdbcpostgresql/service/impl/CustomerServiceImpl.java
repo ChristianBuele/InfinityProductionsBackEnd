@@ -168,5 +168,14 @@ public class CustomerServiceImpl implements CustomerService{
 	public boolean addPreset(presets preset) {
 		return customerDao.addPreset(preset);
 	}
+	@Override
+	public List<presets> findPremiumPresets() {
+		return customerDao.findPremiumPresets();
+	}
+	@Override
+	public List<presets> findFreePresets() {
+		// TODO Auto-generated method stub
+		return customerDao.findFreePresets();
+	}
 
 }
