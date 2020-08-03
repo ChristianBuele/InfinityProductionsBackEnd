@@ -359,11 +359,6 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		}
 	}
 	
-	@PostMapping(value="getTarjeta/{id}")
-	public ResponseEntity<List<tarjeta>> getTarjeta(@PathVariable("id") Integer id){
-		List<tarjeta> lista=servicio.listAllTarjeta(id);
-		return ResponseEntity.ok(lista);
-	}
 	
 	@GetMapping("listarEventos/")
 	public ResponseEntity<List<eventosDao>> getEventos(){
@@ -414,7 +409,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				.contentType(MediaType.APPLICATION_PDF)
 				.body(new InputStreamResource(bis));
 	}
-	@GetMapping("listarTarjetas/{id}")
+	@PostMapping("listarTarjetas/{id}")
 	public ResponseEntity<List<tarjeta>> getTarjeta(@PathVariable("id")Integer id) throws ParseException {
 		List<tarjeta> tarjetas=new ArrayList<>();
 		tarjetas=servicio.listAllTarjeta(id);
