@@ -383,7 +383,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 
 	@Override
-<<<<<<< HEAD
+
 	public List<presets> findPremiumPresets() {
 		List<presets> listaPresets=new ArrayList<>();
 			String sql = "SELECT * from presets where categoria = 'Premium'";
