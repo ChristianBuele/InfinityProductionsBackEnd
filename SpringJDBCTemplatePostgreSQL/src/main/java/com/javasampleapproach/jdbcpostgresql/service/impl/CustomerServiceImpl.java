@@ -46,6 +46,11 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public void eliminarProducto(int id) {
+		customerDao.eliminarProducto(id);
+	}
+
+	@Override
 	public void insertBatch(List<Customer> customers) {
 		customerDao.inserBatch(customers);
 	}	

@@ -425,6 +425,18 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		preventas=servicio.listarpreventa(idUs,idTar);
 		return ResponseEntity.ok(preventas);
 	}
+	@PostMapping("eliminarProducto/{id}")
+	public ResponseEntity<HashMap<String,String>> eliminarProdcuto(@PathVariable("id")Integer id){
+		HashMap<String,String> x=new HashMap<String,String>();
+		try {
+			servicio.eliminarProducto(id);
+			x.put("respuesta","true");
+			return ResponseEntity.ok(x);
+		}catch(Exception e) {
+			x.put("respuesta","false");
+			return ResponseEntity.ok(x);
+		}
+	}
 }
  
  

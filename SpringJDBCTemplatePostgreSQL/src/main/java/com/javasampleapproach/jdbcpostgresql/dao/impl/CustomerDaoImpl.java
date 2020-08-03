@@ -145,10 +145,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		String sql ="insert into tarjeta (id_usuariot,num_tarjeta,nombre_tarjeta,mes_expiracion,anio_expiracion,ccv_tarjeta) " + 
 				"values (?,?,?,?,?,?)";
 		getJdbcTemplate().update(sql, new Object[]{tarjeta.getId_usuariot(),tarjeta.getNum_tarjeta(),tarjeta.getNombre_tarjeta(),tarjeta.getMes_expiracion(),tarjeta.getAnio_expiracion(),tarjeta.getCcv_tarjeta()});
-		
 		return tarjeta;
-		
-		
 	}
 
 	@Override
@@ -157,7 +154,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				"values (?,?,?,?,?)";
 		System.out.println("se inserta la id"+producto.getImagen());
 		getJdbcTemplate().update(sql, new Object[]{producto.getPrecio(),producto.getNombre(),producto.getImagen(),producto.getDescripcion(),producto.getCategoria()});
-		
 		return producto;
 	}
 
@@ -211,7 +207,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			}
 		});
 		return productos;*/
-		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen) where estado='activo'";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		
 		List<productoDao> result = new ArrayList<>();
@@ -511,6 +507,12 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			result.add(pre);
 		}
 		return result;
+	}
+
+	@Override
+	public void eliminarProducto(int id) {
+		String sql="update productos set estado = 'eliminado' where id_producto=?";
+		getJdbcTemplate().update(sql,id);
 	}
 
 }
