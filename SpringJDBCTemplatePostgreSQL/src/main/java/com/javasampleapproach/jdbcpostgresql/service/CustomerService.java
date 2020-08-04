@@ -36,4 +36,7 @@ public interface CustomerService {
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
 	boolean pagarFactura(int id_tarjeta,double nuevo_valor); 
+	double saldoTarjeta(int id);
+	usuario getDatosUsuario(int id);
+	int getIdFactura();
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -383,6 +384,35 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			}
 		}
 		return ResponseEntity.ok(eventosProximos);
+	}
+	@PostMapping(value="pagar/")
+	public ResponseEntity<String> pagar(@RequestBody venta pago){
+		System.out.println("entra a pagar "+pago.getId_tarjeta()+" el valor de "+pago.getPrecio_final());
+		double saldo=servicio.saldoTarjeta(pago.getId_tarjeta());
+		System.out.println("El saldo que llega es="+saldo);
+		double nuevoSaldo=saldo-pago.getPrecio_final();
+		
+		if(nuevoSaldo<0.0) {
+			return ResponseEntity.ok("Fondos Insuficientes");
+		}else {
+			boolean band=servicio.pagarFactura(pago.getId_tarjeta(), nuevoSaldo);
+			if(band) {
+				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				Date date = new Date();
+				String fechaVenta=dateFormat.format(date);
+				factura nuevaFactura=new factura();
+				nuevaFactura.setId_usuario(pago.getId_usuario());
+				nuevaFactura.setFecha_factura(fechaVenta);
+				servicio.insertarFactura(nuevaFactura);
+				pago.setId_factura(servicio.getIdFactura());
+				pago.setId_carrito(servicio.getDatosUsuario(pago.getId_usuario()).getId_carrito());
+				servicio.insertarVenta(pago);
+				return ResponseEntity.ok("true");
+			}else {
+				return ResponseEntity.ok("Error al ejecutar el pago");
+			}
+		}
+	
 	}
 	@GetMapping("listarFacturas/{id}")
 	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {

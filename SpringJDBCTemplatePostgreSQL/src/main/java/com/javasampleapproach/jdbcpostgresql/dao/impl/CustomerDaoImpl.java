@@ -211,13 +211,14 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			}
 		});
 		return productos;*/
-		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+		String sql = "select id_producto,id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		
 		List<productoDao> result = new ArrayList<>();
 		for(Map<String, Object> row:rows){
 			System.out.println("productos "+result.size());
 			productoDao cus=new productoDao();
+			cus.setId_producto((Integer)row.get("id_producto"));
 			cus.setId_imagen((Integer)row.get("id_imagen"));
 			cus.setPrecio((double)row.get("precio"));
 			cus.setNombre((String)row.get("nombre"));
@@ -489,6 +490,65 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		}
 		return result;
 		
+	}
+	@Override
+	public boolean pagarFactura(int id_tarjeta,double nuevo_valor) {
+		String sql="update tarjeta set saldo=? where id_tarjeta = ?;";
+		assert getJdbcTemplate() !=null;
+		try {
+			getJdbcTemplate().update(sql,nuevo_valor,id_tarjeta);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	@Override
+	public double saldoTarjeta(int id) {
+		String sql="select saldo from tarjeta where id_tarjeta=?";
+		try {
+			double saldo=(double)getJdbcTemplate().queryForObject(sql, new Object[]{id}, new RowMapper<Double>(){
+				@Override
+				public Double mapRow(ResultSet rs, int rwNumber) throws SQLException {
+					
+					double id=rs.getDouble("saldo");
+					System.out.println("el sadlo que encuentra es "+id);
+					return id;
+				}
+			});
+			return saldo;
+			}catch(Exception EmptyResultDataAccessException ) {
+				return -1;
+			}
+	}
+
+	@Override
+	public usuario getDatosUsuario(int id) {
+		String sql="select * from usuario where id_usuario= '"+id+"'";
+		System.out.println("Realiza la consulta para usuario con id "+id);
+		usuario img=(usuario)getJdbcTemplate().query(sql,new ResultSetExtractor<usuario>() {
+			@Override
+			public usuario extractData(ResultSet rs) throws SQLException, DataAccessException {
+				usuario salida=new usuario();
+				if(rs.next()) {
+					salida.setApellido_usuario(rs.getString("apellido_usuario"));
+					salida.setCorreo_usuario(rs.getString("correo_usuario"));
+					salida.setId_carrito(rs.getInt("correo_usuario"));
+					salida.setId_usuario(rs.getInt("id_usuario"));
+					salida.setNombre_usuario(rs.getString("nombre_usuario"));
+				}
+				return salida;
+			}
+		});
+		return img;
+	}
+
+	@Override
+	public int getIdFactura() {
+String sql = "SELECT MAX(id_factura) FROM factura";
+		
+		int total = getJdbcTemplate().queryForObject(sql, Integer.class);
+		System.out.println("el id max factura es "+total);
+		return total;
 	}
 
 }
