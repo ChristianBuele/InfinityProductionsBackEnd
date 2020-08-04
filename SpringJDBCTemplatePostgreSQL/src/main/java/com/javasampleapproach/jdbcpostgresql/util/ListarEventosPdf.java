@@ -84,7 +84,7 @@ public class ListarEventosPdf {
         return new ByteArrayInputStream(out.toByteArray());
     }
     public static ByteArrayInputStream factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
-    	System.out.println("Hay")
+    	System.out.println("Hay");
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {

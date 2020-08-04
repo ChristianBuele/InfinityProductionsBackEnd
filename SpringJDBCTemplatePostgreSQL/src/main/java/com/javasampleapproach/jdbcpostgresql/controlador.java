@@ -265,8 +265,6 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	 return ResponseEntity.ok(lista);
  }
 
-<<<<<<< HEAD
-=======
 	@RequestMapping(value="cargarCarPro/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<carritoproductoDao>> getCarr(@PathVariable("id")Integer id){
 		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
@@ -277,7 +275,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		return ResponseEntity.ok(lista);
 	}
 
->>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
+
 	public static byte[] compressBytes(byte[] data){
 		Deflater deflater = new Deflater();
 		deflater.setInput(data);

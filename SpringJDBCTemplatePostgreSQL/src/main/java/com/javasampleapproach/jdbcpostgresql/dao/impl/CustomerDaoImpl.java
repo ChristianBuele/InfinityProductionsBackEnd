@@ -331,15 +331,11 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
-<<<<<<< HEAD
-		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?)";
-		assert getJdbcTemplate()!=null;
-		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),1);
-=======
+
 		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?,?)";
 		assert getJdbcTemplate()!=null;
 		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),carritoproducto.getCantidad());
->>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
+
 		return carritoproducto;
 	}
 
@@ -598,7 +594,6 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito) {
 		List<carritoDetallado>lista = new ArrayList<>();
 		String sql="select pro.nombre,pro.precio,pro.descripcion,cpro.id_carrito from productos as pro inner join carritoproducto as cpro on pro.id_producto=cpro.id_producto where cpro.id_carrito=?";
@@ -651,7 +646,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		}catch(Exception e) {
 			return false;
 		}
-=======
+	}
 	public usuario datosUsuario(int id) {
 		String sql = "select nombre_usuario,apellido_usuario,contrasenia_usuario from usuario where id_usuario=?";
 			return getJdbcTemplate().queryForObject(sql, new Object[]{id}, new RowMapper<usuario>(){
@@ -686,7 +681,6 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			result.add(carr);
 		}
 		return result;
->>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
 	}
 
 }
