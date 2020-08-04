@@ -2,6 +2,7 @@ package com.javasampleapproach.jdbcpostgresql.model;
 
 public class productoDao {
 	private int id_imagen;
+	private int id_producto;
 	private String nombre;
     private String descripcion;
     private double precio;
@@ -42,6 +43,12 @@ public class productoDao {
 	}
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
+	}
+	public int getId_producto() {
+		return id_producto;
+	}
+	public void setId_producto(int id_producto) {
+		this.id_producto = id_producto;
 	}
     
 

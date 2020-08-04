@@ -96,13 +96,11 @@ public class CustomerServiceImpl implements CustomerService{
 		System.out.println("Total Number Customer is: " + totalNumberCustomer);
 	}
 
-
 	@Override
 	public carrito insertarCarrito(carrito carrito) {
 		carrito carritonuevo = customerDao.insertarCarrito(carrito);
 		return carritonuevo;
 	}
-
 
 	@Override
 	public int verMaxId() {
@@ -110,13 +108,11 @@ public class CustomerServiceImpl implements CustomerService{
 		return id;
 	}
 
-
 	@Override
 	public usuario insertarUsuario(usuario usuario) {
 		usuario us=customerDao.insertarUsuario(usuario);
 		return us;
 	}
-
 
 	@Override
 	public tarjeta ingresarTarjeta(tarjeta tarjeta) {
@@ -124,20 +120,17 @@ public class CustomerServiceImpl implements CustomerService{
 		return t;
 	}
 
-
 	@Override
 	public productos ingresarProducto(productos producto) {
 		productos x=customerDao.ingresarProducto(producto);
 		return x;
 	}
 
-
 	@Override
 	public void insertarImagen(ImageModel image) {
 		customerDao.insertarImagen(image);
 		
 	}
-
 
 	@Override
 	public ImageModel cargarImagen(String id) {
@@ -146,8 +139,6 @@ public class CustomerServiceImpl implements CustomerService{
 		return img;
 	}
 
-
-
 	@Override
 	public boolean existeUsuario(String correo) {
 		
@@ -155,12 +146,10 @@ public class CustomerServiceImpl implements CustomerService{
 		
 	}
 
-
 	@Override
 	public boolean contraseniaCorrecta(String correo,String contra) {
 		return customerDao.contraseniaCorrecta(correo, contra);
 	}
-
 
 	@Override
 	public factura insertarFactura(factura factura) {
@@ -179,30 +168,25 @@ public class CustomerServiceImpl implements CustomerService{
 		return x;
 	}
 
-
 	@Override
 	public boolean addProducto(productos producto) {
 		return customerDao.addProducto(producto);
 	}
-
 
 	@Override
 	public int getIdImagen() {
 		return customerDao.getIdImagen();
 	}
 
-
 	@Override
 	public List<productoDao> findAllProducts() {
 		return customerDao.findAllProducts();
 	}
 
-
 	@Override
 	public int getIdUsuario(String correo) {
 		return customerDao.getIdUsuario(correo);
 	}
-
 
 	@Override
 	public boolean addPreset(presets preset) {
@@ -216,6 +200,25 @@ public class CustomerServiceImpl implements CustomerService{
 	public List<presets> findFreePresets() {
 		// TODO Auto-generated method stub
 		return customerDao.findFreePresets();
+	}
+	@Override
+	public boolean pagarFactura(int id_tarjeta, double nuevo_valor) {
+		// TODO Auto-generated method stub
+		return customerDao.pagarFactura(id_tarjeta, nuevo_valor);
+	}
+	@Override
+	public double saldoTarjeta(int id) {
+		// TODO Auto-generated method stub
+		return customerDao.saldoTarjeta(id);
+	}
+	@Override
+	public usuario getDatosUsuario(int id) {
+		return customerDao.getDatosUsuario(id);
+	}
+	@Override
+	public int getIdFactura() {
+		// TODO Auto-generated method stub
+		return customerDao.getIdFactura();
 	}
 
 }

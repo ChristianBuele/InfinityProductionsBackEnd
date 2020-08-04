@@ -1,6 +1,8 @@
 package com.javasampleapproach.jdbcpostgresql.model;
 
 public class venta {
+private int id_tarjeta;
+
 private int id_venta;
 private int id_factura;
 private int id_carrito;
@@ -9,6 +11,7 @@ private String fecha_evento;
 private String direccion_evento;
 private String direccion_Entrega;
 private double precio_final;
+private int id_usuario;
 public venta() {
 	
 }
@@ -71,6 +74,18 @@ public double getPrecio_final() {
 }
 public void setPrecio_final(double precio_final) {
 	this.precio_final = precio_final;
+}
+public int getId_tarjeta() {
+	return id_tarjeta;
+}
+public void setId_tarjeta(int id_tarjeta) {
+	this.id_tarjeta = id_tarjeta;
+}
+public int getId_usuario() {
+	return id_usuario;
+}
+public void setId_usuario(int id_usuario) {
+	this.id_usuario = id_usuario;
 }
 
 }
