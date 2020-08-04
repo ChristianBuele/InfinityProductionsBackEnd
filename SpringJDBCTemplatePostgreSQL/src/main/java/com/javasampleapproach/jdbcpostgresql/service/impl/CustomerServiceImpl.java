@@ -51,6 +51,21 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public usuario datosUsuario(int id) {
+		return customerDao.datosUsuario(id);
+	}
+
+	@Override
+	public void actualizarDataUsuario(String nom, String ape, String contra, int id) {
+		customerDao.actualizarDataUsuario(nom,ape,contra,id);
+	}
+
+	@Override
+	public List<carritoproductoDao> listarProCarri(int id) {
+		return customerDao.listarProCarri(id);
+	}
+
+	@Override
 	public void insertBatch(List<Customer> customers) {
 		customerDao.inserBatch(customers);
 	}	

@@ -310,9 +310,9 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
-		String sql="insert into carritoproducto (id_carrito,id_producto,fecha) values (?,?,?)";
+		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?,?)";
 		assert getJdbcTemplate()!=null;
-		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha());
+		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),carritoproducto.getCantidad());
 		return carritoproducto;
 	}
 
@@ -513,6 +513,43 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	public void eliminarProducto(int id) {
 		String sql="update productos set estado = 'eliminado' where id_producto=?";
 		getJdbcTemplate().update(sql,id);
+	}
+
+	@Override
+	public usuario datosUsuario(int id) {
+		String sql = "select nombre_usuario,apellido_usuario,contrasenia_usuario from usuario where id_usuario=?";
+			return getJdbcTemplate().queryForObject(sql, new Object[]{id}, new RowMapper<usuario>(){
+				@Override
+				public usuario mapRow(ResultSet rs, int rwNumber) throws SQLException {
+					usuario cus=new usuario();
+					cus.setNombre_usuario(rs.getString("nombre_usuario"));
+					cus.setApellido_usuario(rs.getString("apellido_usuario"));
+					cus.setContrasenia_usuario(rs.getString("contrasenia_usuario"));
+					return cus;
+				}
+			});
+	}
+
+	@Override
+	public void actualizarDataUsuario(String nom, String ape, String contra,int id) {
+		String sql="update usuario set nombre_usuario=?, apellido_usuario=?, contrasenia_usuario=? where id_usuario=?";
+		getJdbcTemplate().update(sql,nom,ape,contra,id);
+	}
+
+	@Override
+	public List<carritoproductoDao> listarProCarri(int id) {
+		String sql="select imagen, nombre, precio from usuario join carritoproducto using (id_carrito)\n" +
+				"join productos using (id_producto) join imagen using (id_imagen) where id_usuario=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
+		List<carritoproductoDao> result = new ArrayList<carritoproductoDao>();
+		for(Map<String, Object> row:rows){
+			carritoproductoDao carr=new carritoproductoDao();
+			carr.setImagen((byte [])row.get("imagen"));
+			carr.setNombre((String)row.get("nombre"));
+			carr.setPrecio((Double)row.get("precio"));
+			result.add(carr);
+		}
+		return result;
 	}
 
 }

@@ -37,4 +37,7 @@ public interface CustomerService {
 	List<facturaDao> listarFacturas(int id);
 	List<preventa> listarpreventa(int id_usuario,int id_tarjeta);
 	void eliminarProducto(int id);
+	usuario datosUsuario(int id);
+	void actualizarDataUsuario(String nom,String ape,String contra,int id);
+	List<carritoproductoDao> listarProCarri (int id);
 }
