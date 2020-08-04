@@ -32,7 +32,7 @@ public interface CustomerDao {
 	List<presets> getPreset(ArrayList<String> ids);
 	List<presets> findPremiumPresets();
 	List<presets> findFreePresets();
-
+	boolean pagarFactura(int id_tarjeta,double nuevo_valor); 
 	List<tarjeta> findTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
