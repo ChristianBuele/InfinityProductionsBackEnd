@@ -84,13 +84,13 @@ public class ListarEventosPdf {
         return new ByteArrayInputStream(out.toByteArray());
     }
     public static ByteArrayInputStream factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
-    	System.out.println("Hay");
+    	System.out.println("Hay "+eventos.size()+" presets "+presets.size());
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
 			PdfWriter.getInstance(document, new FileOutputStream("factura.pdf"));
 			Image header=Image.getInstance("src/main/java/com/javasampleapproach/jdbcpostgresql/img/logo.png");
-			header.scaleToFit(650,1000);
+			header.scaleToFit(650,700);
 			header.setAlignment(Chunk.ALIGN_CENTER);
 			
 			Paragraph parrafo= new Paragraph();
