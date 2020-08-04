@@ -1,14 +1,10 @@
 package com.javasampleapproach.jdbcpostgresql;
 
-
-import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -19,13 +15,8 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-
 import com.javasampleapproach.jdbcpostgresql.model.*;
-
 import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +24,6 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity.BodyBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,11 +33,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 
 @RestController
@@ -278,6 +265,19 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	 return ResponseEntity.ok(lista);
  }
 
+<<<<<<< HEAD
+=======
+	@RequestMapping(value="cargarCarPro/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<carritoproductoDao>> getCarr(@PathVariable("id")Integer id){
+		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
+		lista=servicio.listarProCarri(id);
+		for (int i=0;i<lista.size();i++){
+			lista.get(i).setImagen(decompressBytes(lista.get(i).getImagen()));
+		}
+		return ResponseEntity.ok(lista);
+	}
+
+>>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
 	public static byte[] compressBytes(byte[] data){
 		Deflater deflater = new Deflater();
 		deflater.setInput(data);
@@ -475,6 +475,11 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			x.put("respuesta","false");
 			return ResponseEntity.ok(x);
 		}
+	}
+	@GetMapping("datoscliente/{id}")
+	public ResponseEntity<usuario> getDataCli(@PathVariable("id")Integer id) throws ParseException {
+		usuario us=servicio.datosUsuario(id);
+		return ResponseEntity.ok(us);
 	}
 }
  
