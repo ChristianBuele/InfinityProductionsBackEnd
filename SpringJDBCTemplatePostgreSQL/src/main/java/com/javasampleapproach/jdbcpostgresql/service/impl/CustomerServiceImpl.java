@@ -41,6 +41,16 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public List<preventa> listarpreventa(int id_usuario, int id_tarjeta) {
+		return customerDao.listarPreventas(id_usuario,id_tarjeta);
+	}
+
+	@Override
+	public void eliminarProducto(int id) {
+		customerDao.eliminarProducto(id);
+	}
+
+	@Override
 	public void insertBatch(List<Customer> customers) {
 		customerDao.inserBatch(customers);
 	}	

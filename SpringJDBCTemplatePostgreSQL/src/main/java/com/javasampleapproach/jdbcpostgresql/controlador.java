@@ -446,6 +446,27 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		tarjetas=servicio.listAllTarjeta(id);
 		return ResponseEntity.ok(tarjetas);
 	}
+	@PostMapping("listarPreventa/{id}")
+	public ResponseEntity<List<preventa>> getpreventa(@PathVariable("id")String id){
+		String[] parts = id.split(",");
+		int idUs=Integer.valueOf(parts[0]);
+		int idTar=Integer.valueOf(parts[1]);
+		List<preventa> preventas = new ArrayList<>();
+		preventas=servicio.listarpreventa(idUs,idTar);
+		return ResponseEntity.ok(preventas);
+	}
+	@PostMapping("eliminarProducto/{id}")
+	public ResponseEntity<HashMap<String,String>> eliminarProdcuto(@PathVariable("id")Integer id){
+		HashMap<String,String> x=new HashMap<String,String>();
+		try {
+			servicio.eliminarProducto(id);
+			x.put("respuesta","true");
+			return ResponseEntity.ok(x);
+		}catch(Exception e) {
+			x.put("respuesta","false");
+			return ResponseEntity.ok(x);
+		}
+	}
 }
  
  

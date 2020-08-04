@@ -145,10 +145,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		String sql ="insert into tarjeta (id_usuariot,num_tarjeta,nombre_tarjeta,mes_expiracion,anio_expiracion,ccv_tarjeta) " + 
 				"values (?,?,?,?,?,?)";
 		getJdbcTemplate().update(sql, new Object[]{tarjeta.getId_usuariot(),tarjeta.getNum_tarjeta(),tarjeta.getNombre_tarjeta(),tarjeta.getMes_expiracion(),tarjeta.getAnio_expiracion(),tarjeta.getCcv_tarjeta()});
-		
 		return tarjeta;
-		
-		
 	}
 
 	@Override
@@ -157,7 +154,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				"values (?,?,?,?,?)";
 		System.out.println("se inserta la id"+producto.getImagen());
 		getJdbcTemplate().update(sql, new Object[]{producto.getPrecio(),producto.getNombre(),producto.getImagen(),producto.getDescripcion(),producto.getCategoria()});
-		
 		return producto;
 	}
 
@@ -211,7 +207,11 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			}
 		});
 		return productos;*/
+<<<<<<< HEAD
 		String sql = "select id_producto,id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
+=======
+		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen) where estado='activo'";
+>>>>>>> aefa167a851f016f472fd5b8291ff3db14feb90a
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		
 		List<productoDao> result = new ArrayList<>();
@@ -549,6 +549,34 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		int total = getJdbcTemplate().queryForObject(sql, Integer.class);
 		System.out.println("el id max factura es "+total);
 		return total;
+	}
+
+	@Override
+	public List<preventa> listarPreventas(int id_usuario, int id_tarjeta) {
+		String sql="select id_tarjeta, id_usuario, num_tarjeta, nombre_usuario, \n" +
+				"apellido_usuario, id_carrito, id_factura, fecha_factura\n" +
+				"from usuario us join tarjeta tr on us.id_usuario=tr.id_usuariot\n" +
+				"join factura fr using (id_usuario) where id_usuario= ? and id_tarjeta= ? and estado='pendiente'";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id_usuario,id_tarjeta);
+		List<preventa> result = new ArrayList<preventa>();
+		for(Map<String, Object> row:rows){
+			preventa pre=new preventa();
+			pre.setId_tarjeta((Integer)row.get("id_tarjeta"));
+			pre.setId_usuario((Integer)row.get("id_usuario"));
+			pre.setNombre_usuario((String)row.get("nombre_usuario"));
+			pre.setApellido_usuario((String)row.get("apellido_usuario"));
+			pre.setId_carrito((Integer)row.get("id_carrito"));
+			pre.setId_factura((Integer)row.get("id_factura"));
+			pre.setFecha_factura((String)row.get("fecha_factura"));
+			result.add(pre);
+		}
+		return result;
+	}
+
+	@Override
+	public void eliminarProducto(int id) {
+		String sql="update productos set estado = 'eliminado' where id_producto=?";
+		getJdbcTemplate().update(sql,id);
 	}
 
 }

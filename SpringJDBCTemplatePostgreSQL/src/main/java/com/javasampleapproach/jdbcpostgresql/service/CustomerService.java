@@ -35,8 +35,13 @@ public interface CustomerService {
 	List<tarjeta> listAllTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
+<<<<<<< HEAD
 	boolean pagarFactura(int id_tarjeta,double nuevo_valor); 
 	double saldoTarjeta(int id);
 	usuario getDatosUsuario(int id);
 	int getIdFactura();
+=======
+	List<preventa> listarpreventa(int id_usuario,int id_tarjeta);
+	void eliminarProducto(int id);
+>>>>>>> aefa167a851f016f472fd5b8291ff3db14feb90a
 }
