@@ -306,16 +306,34 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public venta insertarVenta(venta venta) {
-		String sql="insert into venta (id_factura,id_carrito,fecha_venta,fecha_evento,direccion_evento,direccion_entrega,precio_final) values (?,?,?,?,?,?,?)";
+		String sql="insert into venta (id_tarjeta,id_factura,id_carrito,fecha_venta,fecha_evento,direccion_evento,direccion_entrega,precio_final) values (?,?,?,?,?,?,?,?)";
 		assert getJdbcTemplate() !=null;
-		getJdbcTemplate().update(sql,venta.getId_factura(),venta.getId_carrito(),venta.getFecha_venta(),venta.getFecha_evento(),venta.getDireccion_evento(),venta.getDireccion_Entrega(),venta.getPrecio_final());
+		getJdbcTemplate().update(sql,venta.getId_tarjeta(),venta.getId_factura(),venta.getId_carrito(),venta.getFecha_venta(),venta.getFecha_evento(),venta.getDireccion_evento(),venta.getDireccion_Entrega(),venta.getPrecio_final());
 		return venta;
 	}
 	@Override
+	public List<carritoproducto> getProductoCarrito(int idCarrito){
+		List<carritoproducto>lista;
+		String sql="select * from carritoproducto where id_carrito=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,idCarrito);
+		List<carritoproducto> result = new ArrayList<>();
+		for(Map<String, Object> row:rows){
+			carritoproducto pre= new carritoproducto();
+			pre.setId_carrito(idCarrito);
+			pre.setId_productocarrito((Integer)row.get("id_carritoproducto"));
+			pre.setId_producto((Integer)row.get("id_producto"));
+			pre.setFecha((String)row.get("fecha"));
+			pre.setCantidad((Integer)row.get("cantidad"));
+			result.add(pre);
+		}
+		return result;
+		
+	}
+	@Override
 	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
-		String sql="insert into carritoproducto (id_carrito,id_producto,fecha) values (?,?,?)";
+		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?)";
 		assert getJdbcTemplate()!=null;
-		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha());
+		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),1);
 		return carritoproducto;
 	}
 
@@ -382,7 +400,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 
 	@Override
-
 	public List<presets> findPremiumPresets() {
 		List<presets> listaPresets=new ArrayList<>();
 			String sql = "SELECT * from presets where categoria = 'Premium'";
@@ -427,9 +444,6 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		
 		return listaPresets;
 	}
-
-
-	
 
 	public List<tarjeta> findTarjeta(int id) {
 		String sql = "select * from tarjeta where id_usuariot= ?";
@@ -530,7 +544,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				if(rs.next()) {
 					salida.setApellido_usuario(rs.getString("apellido_usuario"));
 					salida.setCorreo_usuario(rs.getString("correo_usuario"));
-					salida.setId_carrito(rs.getInt("correo_usuario"));
+					salida.setId_carrito(rs.getInt("id_carrito"));
 					salida.setId_usuario(rs.getInt("id_usuario"));
 					salida.setNombre_usuario(rs.getString("nombre_usuario"));
 				}
@@ -575,6 +589,61 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	public void eliminarProducto(int id) {
 		String sql="update productos set estado = 'eliminado' where id_producto=?";
 		getJdbcTemplate().update(sql,id);
+	}
+
+	@Override
+	public List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito) {
+		List<carritoDetallado>lista = new ArrayList<>();
+		String sql="select pro.nombre,pro.precio,pro.descripcion,cpro.id_carrito from productos as pro inner join carritoproducto as cpro on pro.id_producto=cpro.id_producto where cpro.id_carrito=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,idCarrito);
+		for(Map<String, Object> row:rows){
+			carritoDetallado nuevo= new carritoDetallado();
+			nuevo.setNombreProducto((String)row.get("nombre"));
+			nuevo.setPrecioProducto((double)row.get("precio"));
+			nuevo.setIdCarrito((Integer)row.get("id_carrito"));
+			nuevo.setDescripcion((String)row.get("descripcion"));
+			lista.add(nuevo);
+		}
+		return lista;
+	}
+
+	@Override
+	public List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito) {
+		List<carritoDetallado>lista = new ArrayList<>();
+		String sql="select pre.nombre,pre.precio,pre.descripcion,cpre.id_carrito from presets as pre inner join presetscarrito as cpre on pre.id_preset=cpre.id_carrito where cpre.id_Carrito=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,idCarrito);
+		for(Map<String, Object> row:rows){
+			carritoDetallado nuevo= new carritoDetallado();
+			nuevo.setNombreProducto((String)row.get("nombre"));
+			nuevo.setPrecioProducto((double)row.get("precio"));
+			nuevo.setIdCarrito((Integer)row.get("id_carrito"));
+			nuevo.setDescripcion((String)row.get("descripcion"));
+			lista.add(nuevo);
+		}
+		return lista;
+	}
+
+	@Override
+	public boolean addValorCarrito(int id, double valor) {
+		String sql="update carrito set total=? where id_carrito=?";
+		assert getJdbcTemplate() !=null;
+		try {
+			getJdbcTemplate().update(sql,id,valor);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	@Override
+	public boolean actualizarIdCarrito(int idUsuario,int idCarrito) {
+		String sql="update usuario set id_carrito=? where id_usuario=?";
+		assert getJdbcTemplate() !=null;
+		try {
+			getJdbcTemplate().update(sql,idCarrito,idUsuario);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
 	}
 
 }

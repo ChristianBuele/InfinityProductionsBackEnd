@@ -205,5 +205,26 @@ public class CustomerServiceImpl implements CustomerService{
 		// TODO Auto-generated method stub
 		return customerDao.getIdFactura();
 	}
+	@Override
+	public List<carritoproducto> getProductoCarrito(int idCarrito) {
+		// TODO Auto-generated method stub
+		return customerDao.getProductoCarrito(idCarrito);
+	}
+	@Override
+	public List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito) {
+		return customerDao.getCarritoDetalladoProductos(idCarrito);
+	}
+	@Override
+	public List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito) {
+	return customerDao.getCarritoDetalladoPresets(idCarrito);
+	}
+	@Override
+	public boolean addValorCarrito(int id, double valor) {
+		return customerDao.addValorCarrito(id, valor);
+	}
+	@Override
+	public boolean actualizarIdCarrito(int id_usuario, int id_Carrito) {
+		return customerDao.actualizarIdCarrito(id_usuario, id_Carrito);
+	}
 
 }

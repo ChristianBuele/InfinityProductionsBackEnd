@@ -35,12 +35,15 @@ public interface CustomerService {
 	List<tarjeta> listAllTarjeta(int id);
 	List<eventosDao> listarEventos();
 	List<facturaDao> listarFacturas(int id);
-
+	List<carritoproducto> getProductoCarrito(int idCarrito);
 	boolean pagarFactura(int id_tarjeta,double nuevo_valor); 
 	double saldoTarjeta(int id);
 	usuario getDatosUsuario(int id);
 	int getIdFactura();
-
 	List<preventa> listarpreventa(int id_usuario,int id_tarjeta);
 	void eliminarProducto(int id);
+	List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito);
+	List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito);
+	boolean addValorCarrito(int id,double valor);
+	boolean actualizarIdCarrito(int id_usuario,int id_Carrito);
 }

@@ -5,6 +5,7 @@ private int id_productocarrito;
 private int id_carrito;
 private int id_producto;
 private String fecha;
+private int cantidad;
 public carritoproducto() {
 	
 }
@@ -37,6 +38,12 @@ public String getFecha() {
 }
 public void setFecha(String fecha) {
 	this.fecha = fecha;
+}
+public int getCantidad() {
+	return cantidad;
+}
+public void setCantidad(int cantidad) {
+	this.cantidad = cantidad;
 }
 
 

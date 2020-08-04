@@ -41,4 +41,9 @@ public interface CustomerDao {
 	int getIdFactura();
 	List<preventa> listarPreventas(int id_usuario,int id_tarjeta);
 	void eliminarProducto(int id);
+	List<carritoproducto> getProductoCarrito(int idCarrito);
+	List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito);
+	List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito);
+	boolean addValorCarrito(int id,double valor);
+	boolean actualizarIdCarrito(int id_usuario,int id_Carrito);
 	}
