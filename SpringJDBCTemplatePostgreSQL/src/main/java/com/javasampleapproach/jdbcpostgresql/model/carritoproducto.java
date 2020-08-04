@@ -39,6 +39,17 @@ public String getFecha() {
 public void setFecha(String fecha) {
 	this.fecha = fecha;
 }
+<<<<<<< HEAD
+public int getCantidad() {
+	return cantidad;
+}
+public void setCantidad(int cantidad) {
+	this.cantidad = cantidad;
+}
+
+
+=======
 public int getCantidad() {return cantidad;}
 public void setCantidad(int cantidad){this.cantidad = cantidad;}
+>>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
 }

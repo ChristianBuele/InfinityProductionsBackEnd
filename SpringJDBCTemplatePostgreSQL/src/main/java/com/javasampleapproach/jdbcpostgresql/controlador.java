@@ -234,9 +234,8 @@ public ResponseEntity<List<presets>> getFreePresets(){
 	return ResponseEntity.ok(presetsLista);
 	
 }
-	
-	@PostMapping(value="preset/")
-	public ResponseEntity<String> addPreset(@ModelAttribute presets model) throws IOException{
+@PostMapping(value="preset/")
+public ResponseEntity<String> addPreset(@ModelAttribute presets model) throws IOException{
 		System.out.println("entra a agregar preset");
 		System.out.println("Llega la foto "+model.getImagenPreset().getOriginalFilename()+" y el archivo "+model.getPreset().getOriginalFilename());
 		boolean band=servicio.addPreset(model);
@@ -245,11 +244,7 @@ public ResponseEntity<List<presets>> getFreePresets(){
 		}
 		return ResponseEntity.ok("Error al ingresar Preset");
 	
-	}
-	
-
-	
-	
+	}		
 @PostMapping(value="correo/{correo}")
 public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo){
 	System.out.println("Entra a buscar "+correo);
@@ -257,7 +252,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	return ResponseEntity.ok(String.valueOf(id));
 }
 
- @RequestMapping(value="cargarProductos/", method = RequestMethod.GET)
+@RequestMapping(value="cargarProductos/", method = RequestMethod.GET)
  public ResponseEntity<List<productoDao>> getAllProducts(){
 	 List<productoDao> lista=new ArrayList<productoDao>();
 	 System.out.println("buscando productos");
@@ -270,6 +265,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	 return ResponseEntity.ok(lista);
  }
 
+<<<<<<< HEAD
+=======
 	@RequestMapping(value="cargarCarPro/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<carritoproductoDao>> getCarr(@PathVariable("id")Integer id){
 		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
@@ -280,6 +277,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		return ResponseEntity.ok(lista);
 	}
 
+>>>>>>> 190ea3aecea0db50aead1907730dae658b38f0e9
 	public static byte[] compressBytes(byte[] data){
 		Deflater deflater = new Deflater();
 		deflater.setInput(data);
@@ -402,13 +400,28 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				servicio.insertarFactura(nuevaFactura);
 				pago.setId_factura(servicio.getIdFactura());
 				pago.setId_carrito(servicio.getDatosUsuario(pago.getId_usuario()).getId_carrito());
-				servicio.insertarVenta(pago);
+				String fiesta=pago.getDireccion_evento().replace('(', ' ').replace(')',' ');
+				String entrega=pago.getDireccion_Entrega().replace('(', ' ').replace(')',' ');
+				pago.setDireccion_Entrega(entrega);
+				pago.setDireccion_evento(fiesta);
+				servicio.insertarVenta(pago);//inserto la venta
+				servicio.addValorCarrito(pago.getId_carrito(), pago.getPrecio_final());//agrego el valor al carrito
+				int nuevoCarrito=this.crearCarrito();
+				servicio.actualizarIdCarrito(pago.getId_usuario(), nuevoCarrito);//entrego un nuevo carrito al usaurio
+				generarFactura(pago.getId_carrito());//voy a generar la factura
 				return ResponseEntity.ok("true");
 			}else {
 				return ResponseEntity.ok("Error al ejecutar el pago");
 			}
 		}
 	
+	}
+	public void generarFactura(int id_carrito) {
+		List<carritoDetallado> listaProductos=servicio.getCarritoDetalladoProductos(id_carrito);
+	    List<carritoDetallado> listaPresets=servicio.getCarritoDetalladoPresets(id_carrito);
+	    System.out.print("productos"+listaProductos.size()+" listaPresets="+listaPresets.size());
+		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets);
+		fact.start();
 	}
 	@GetMapping("listarFacturas/{id}")
 	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {
