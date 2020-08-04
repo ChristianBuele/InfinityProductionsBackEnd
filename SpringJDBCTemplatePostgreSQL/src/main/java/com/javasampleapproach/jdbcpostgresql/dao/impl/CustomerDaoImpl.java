@@ -600,7 +600,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 
 	@Override
 	public List<carritoproductoDao> listarProCarri(int id) {
-		String sql="select imagen, nombre, precio from usuario join carritoproducto using (id_carrito)\n" +
+		String sql="select imagen, nombre, precio,id_carritoproducto from usuario join carritoproducto using (id_carrito)\n" +
 				"join productos using (id_producto) join imagen using (id_imagen) where id_usuario=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
 		List<carritoproductoDao> result = new ArrayList<carritoproductoDao>();
@@ -609,6 +609,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			carr.setImagen((byte [])row.get("imagen"));
 			carr.setNombre((String)row.get("nombre"));
 			carr.setPrecio((Double)row.get("precio"));
+			carr.setId((Integer)row.get("id_carritoproducto"));
 			result.add(carr);
 		}
 		return result;

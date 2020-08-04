@@ -4,7 +4,7 @@ public class carritoproductoDao {
     private byte[] imagen;
     private String nombre;
     private double precio;
-
+    private int id;
     public byte[] getImagen() {
         return imagen;
     }
@@ -27,5 +27,13 @@ public class carritoproductoDao {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
