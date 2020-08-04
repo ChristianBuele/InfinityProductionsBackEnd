@@ -207,11 +207,9 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			}
 		});
 		return productos;*/
-<<<<<<< HEAD
+
 		String sql = "select id_producto,id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen)";
-=======
-		String sql = "select id_imagen,imagen, precio,nombre,descripcion,categoria from productos join imagen using (id_imagen) where estado='activo'";
->>>>>>> aefa167a851f016f472fd5b8291ff3db14feb90a
+
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
 		
 		List<productoDao> result = new ArrayList<>();

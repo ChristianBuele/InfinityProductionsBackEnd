@@ -32,7 +32,6 @@ public interface CustomerDao {
 	List<presets> getPreset(ArrayList<String> ids);
 	List<presets> findPremiumPresets();
 	List<presets> findFreePresets();
-<<<<<<< HEAD
 	boolean pagarFactura(int id_tarjeta,double nuevo_valor); 
 	List<tarjeta> findTarjeta(int id);
 	List<eventosDao> listarEventos();
@@ -40,11 +39,6 @@ public interface CustomerDao {
 	double saldoTarjeta(int id);
 	usuario getDatosUsuario(int id);
 	int getIdFactura();
-=======
-	List<tarjeta> findTarjeta(int id);
-	List<eventosDao> listarEventos();
-	List<facturaDao> listarFacturas(int id);
 	List<preventa> listarPreventas(int id_usuario,int id_tarjeta);
 	void eliminarProducto(int id);
->>>>>>> aefa167a851f016f472fd5b8291ff3db14feb90a
 	}
