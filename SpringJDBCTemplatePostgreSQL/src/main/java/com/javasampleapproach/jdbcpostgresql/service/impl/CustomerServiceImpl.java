@@ -242,4 +242,9 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerDao.actualizarIdCarrito(id_usuario, id_Carrito);
 	}
 
+	@Override
+	public void hola() {
+
+	}
+
 }
