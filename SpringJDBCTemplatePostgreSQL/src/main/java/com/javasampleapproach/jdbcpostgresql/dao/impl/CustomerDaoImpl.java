@@ -685,5 +685,15 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		return result;
 	}
 
+	@Override
+	public String getCorreoUsuario(int id) {
+String sql = "SELECT correo_usuario FROM usuario where  id_usuario='"+id+"'";
+		
+		String total = getJdbcTemplate().queryForObject(sql, String.class);
+		System.out.println("Elcorreo es "+total);
+		return total;
+	}
+	
+
 }
 

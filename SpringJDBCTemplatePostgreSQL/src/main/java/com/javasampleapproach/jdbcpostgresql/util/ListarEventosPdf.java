@@ -20,6 +20,8 @@ import com.javasampleapproach.jdbcpostgresql.model.eventosDao;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 
@@ -84,14 +86,17 @@ public class ListarEventosPdf {
         }
         return new ByteArrayInputStream(out.toByteArray());
     }
-    public static ByteArrayInputStream factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
+    public static String factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
     	String presetsNombres="";
     	double total=0.0;
     	System.out.println("Hay "+eventos.size()+" presets "+presets.size());
+    	SecureRandom random = new SecureRandom();
+    	String nomFactura=  new BigInteger(50, random).toString(16)+".pdf";
+    	
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-			PdfWriter.getInstance(document, new FileOutputStream("factura.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(nomFactura));
 			Image header=Image.getInstance("src/main/java/com/javasampleapproach/jdbcpostgresql/img/logo.png");
 			header.scaleToFit(650,700);
 			header.setAlignment(Chunk.ALIGN_CENTER);
@@ -152,6 +157,7 @@ public class ListarEventosPdf {
 			// TODO: handle exception
 		}
         document.close();
-        return new ByteArrayInputStream(out.toByteArray());
+        
+        return nomFactura;
     }
 }

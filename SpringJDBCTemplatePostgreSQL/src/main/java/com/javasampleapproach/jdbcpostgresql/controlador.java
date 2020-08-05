@@ -417,7 +417,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				servicio.addValorCarrito(pago.getId_carrito(), pago.getPrecio_final());//agrego el valor al carrito
 				int nuevoCarrito=this.crearCarrito();
 				servicio.actualizarIdCarrito(pago.getId_usuario(), nuevoCarrito);//entrego un nuevo carrito al usaurio
-				generarFactura(id_carrito);//voy a generar la factura
+				String correoUs=servicio.getCorreoUsuario(pago.getId_usuario());
+				generarFactura(id_carrito,correoUs);//voy a generar la factura
 				return ResponseEntity.ok("true");
 			}else {
 				return ResponseEntity.ok("Error al ejecutar el pago");
@@ -425,11 +426,13 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		}
 	
 	}
-	public void generarFactura(int id_carrito) {
+	public void generarFactura(int id_carrito,String correo) {
 		List<carritoDetallado> listaProductos=servicio.getCarritoDetalladoProductos(id_carrito);
 	    List<carritoDetallado> listaPresets=servicio.getCarritoDetalladoPresets(id_carrito);
 	    System.out.print("productos"+listaProductos.size()+" listaPresets="+listaPresets.size());
-		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets);
+	    
+	    
+		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
 		fact.start();
 	}
 	@GetMapping("listarFacturas/{id}")

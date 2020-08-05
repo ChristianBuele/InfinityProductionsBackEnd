@@ -51,5 +51,6 @@ public interface CustomerService {
 	usuario datosUsuario(int id);
 	void actualizarDataUsuario(String nom,String ape,String contra,int id);
 	List<carritoproductoDao> listarProCarri (int id);
+	String getCorreoUsuario(int id);
 
 }
