@@ -66,6 +66,11 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public int idCarrito(int id) {
+		return customerDao.idCarrito(id);
+	}
+
+	@Override
 	public void insertBatch(List<Customer> customers) {
 		customerDao.inserBatch(customers);
 	}	
@@ -245,6 +250,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void hola() {
 
+	}
+
+	@Override
+	public void eliminarproductocarrito(int id) {
+		customerDao.eliminarproductocarrito(id);
 	}
 
 }

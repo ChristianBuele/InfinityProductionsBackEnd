@@ -267,11 +267,15 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 
 	@RequestMapping(value="cargarCarPro/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<carritoproductoDao>> getCarr(@PathVariable("id")Integer id){
-		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
+		System.out.println("esta enviando 1");
+		System.out.println("id"+id);
+ 		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
 		lista=servicio.listarProCarri(id);
 		for (int i=0;i<lista.size();i++){
 			lista.get(i).setImagen(decompressBytes(lista.get(i).getImagen()));
 		}
+		System.out.println("esta enviando 2");
+		System.out.println("tam lista"+lista.size());
 		return ResponseEntity.ok(lista);
 	}
 
@@ -339,7 +343,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		byte [] encodec=codec.encode(datos);
 		return encodec;
 	}
-	@PostMapping("productocarrito/")
+	@PostMapping("productocarrito")
 	public ResponseEntity<HashMap<String,String>> addcarritoProducto(@RequestBody carritoproducto carritoproducto){
 		HashMap<String,String> x=new HashMap<String,String>();
 		try {
@@ -478,6 +482,44 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	public ResponseEntity<usuario> getDataCli(@PathVariable("id")Integer id) throws ParseException {
 		usuario us=servicio.datosUsuario(id);
 		return ResponseEntity.ok(us);
+	}
+	@GetMapping("eliminarcarrpro/{id}")
+	public ResponseEntity<String> deleteprocorr(@PathVariable("id")String id) throws ParseException {
+	String datos[]=id.split(",");
+	int id_usuario=Integer.parseInt(datos[0]);
+	int id_carritoProducto=Integer.parseInt(datos[1]);
+	List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
+		try {
+			servicio.eliminarproductocarrito(id_carritoProducto);
+			lista=servicio.listarProCarri(id_usuario);
+			double valor=0.0;
+			for (int i=0;i<lista.size();i++){
+				valor+=lista.get(i).getPrecio();
+			}
+			System.out.println("El nuevo precio es"+valor+lista.size());
+			return ResponseEntity.ok(Double.toString(valor));
+		}catch(Exception e) {
+			return ResponseEntity.ok("false");
+		}
+	}
+	@GetMapping("idCarrito/{id}")
+	public Integer d(@PathVariable("id")Integer id) throws ParseException{
+		HashMap<String,String> x=new HashMap<String,String>();
+		return servicio.idCarrito(id);
+	}
+	@GetMapping("vaciarCarrito/{id}")
+	public ResponseEntity<Boolean> vaciarCarrito(@PathVariable("id")Integer id){
+ 		try{
+			List<carritoproductoDao>lista=servicio.listarProCarri(id);
+			for (int i=0;i<lista.size();i++){
+				System.out.println(lista.get(i).getId());
+				servicio.eliminarproductocarrito(lista.get(i).getId());
+			}
+			System.out.println("Se esta eliminado");
+			return ResponseEntity.ok(true);
+		}catch (Exception e){
+ 			return ResponseEntity.ok(false);
+		}
 	}
 }
  

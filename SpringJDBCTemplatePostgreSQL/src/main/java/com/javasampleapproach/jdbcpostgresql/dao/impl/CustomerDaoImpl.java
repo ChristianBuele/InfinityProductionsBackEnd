@@ -15,7 +15,6 @@ import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -119,7 +118,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				"(CUST_ID, NAME, AGE) VALUES (?, ?, ?)" ;
 		getJdbcTemplate().update(sql, new Object[]{
 				cus.getCustId(), cus.getName(), cus.getAge()
-	
+
  */
 	
 	@Override
@@ -670,7 +669,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	@Override
 	public List<carritoproductoDao> listarProCarri(int id) {
 		String sql="select imagen, nombre, precio,id_carritoproducto from usuario join carritoproducto using (id_carrito)\n" +
-				"join productos using (id_producto) join imagen using (id_imagen) where id_usuario=?";
+				"join productos using (id_producto) join imagen using (id_imagen) where id_carrito=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
 		List<carritoproductoDao> result = new ArrayList<carritoproductoDao>();
 		for(Map<String, Object> row:rows){
@@ -682,6 +681,24 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			result.add(carr);
 		}
 		return result;
+	}
+
+	@Override
+	public void eliminarproductocarrito(int id) {
+		String sql="DELETE FROM carritoproducto where id_carritoproducto=?";
+		getJdbcTemplate().update(sql,id);
+	}
+
+	@Override
+	public int idCarrito(int id) {
+		String sql = "select id_carrito from usuario where id_usuario=?";
+		return getJdbcTemplate().queryForObject(sql, new Object[]{id}, new RowMapper<Integer>(){
+			@Override
+			public Integer mapRow(ResultSet rs, int rwNumber) throws SQLException {
+				int a=rs.getInt("id_carrito");
+				return a;
+			}
+		});
 	}
 
 }

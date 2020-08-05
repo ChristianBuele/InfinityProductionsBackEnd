@@ -41,15 +41,14 @@ public interface CustomerDao {
 	int getIdFactura();
 	List<preventa> listarPreventas(int id_usuario,int id_tarjeta);
 	void eliminarProducto(int id);
-
 	List<carritoproducto> getProductoCarrito(int idCarrito);
 	List<carritoDetallado> getCarritoDetalladoProductos(int idCarrito);
 	List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito);
 	boolean addValorCarrito(int id,double valor);
 	boolean actualizarIdCarrito(int id_usuario,int id_Carrito);
-
 	usuario datosUsuario(int id);
 	void actualizarDataUsuario(String nom,String ape,String contra,int id);
 	List<carritoproductoDao> listarProCarri (int id);
-
+	void eliminarproductocarrito(int id);
+	int idCarrito(int id);
 	}
