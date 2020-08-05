@@ -438,7 +438,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 			preset.setBytesImagen((byte [])row.get("imagen"));
 			preset.setNombrePreset((String)row.get("nombre"));
 			preset.setDescripcionPreset((String)row.get("descripcion"));
-			preset.setCategoriaPreset("Premium");
+			preset.setCategoriaPreset("Free");
 			preset.setPrecioPreset(0.0);
 			listaPresets.add(preset);
 		}
