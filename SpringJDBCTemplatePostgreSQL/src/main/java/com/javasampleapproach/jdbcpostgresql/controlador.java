@@ -368,14 +368,12 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	
 	
 	@GetMapping(value = "listarEventos/", produces = "application/json")
-	public ResponseEntity<HashMap<String,eventosDao>> getEventos(){
+	public ResponseEntity<HashMap<String,List<eventosDao>>> getEventos(){
 		System.out.println("ENtroooo");
  	List<eventosDao> eventos=new ArrayList<>();
 		eventos=servicio.listarEventos();
-		HashMap<String,eventosDao> ev=new HashMap<>();
-		for (int i=0;i<eventos.size();i++){
-			ev.put(String.valueOf(i),eventos.get(i));
-		}
+		HashMap<String,List<eventosDao>> ev=new HashMap<>();
+		ev.put("eventos",eventos);
 		System.out.println("Salio");
 		return ResponseEntity.ok(ev);
 	}
