@@ -701,5 +701,10 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		});
 	}
 
+	@Override
+	public String getCorreoUsuario(int id) {
+		return null;
+	}
+
 }
 

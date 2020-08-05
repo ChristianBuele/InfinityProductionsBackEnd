@@ -367,13 +367,19 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	
 	
-	@GetMapping("listarEventos/")
-	public ResponseEntity<List<eventosDao>> getEventos(){
-		List<eventosDao> eventos=new ArrayList<>();
+	@GetMapping(value = "listarEventos/", produces = "application/json")
+	public ResponseEntity<HashMap<String,eventosDao>> getEventos(){
+		System.out.println("ENtroooo");
+ 	List<eventosDao> eventos=new ArrayList<>();
 		eventos=servicio.listarEventos();
-		return ResponseEntity.ok(eventos);
+		HashMap<String,eventosDao> ev=new HashMap<>();
+		for (int i=0;i<eventos.size();i++){
+			ev.put(String.valueOf(i),eventos.get(i));
+		}
+		System.out.println("Salio");
+		return ResponseEntity.ok(ev);
 	}
-	@GetMapping("listarEventosProximos/")
+	@GetMapping(value = "listarEventosProximos/")
 	public ResponseEntity<List<eventosDao>> getEventosProximos() throws ParseException {
 		List<eventosDao> eventos=new ArrayList<>();
 		List<eventosDao> eventosProximos=new ArrayList<>();

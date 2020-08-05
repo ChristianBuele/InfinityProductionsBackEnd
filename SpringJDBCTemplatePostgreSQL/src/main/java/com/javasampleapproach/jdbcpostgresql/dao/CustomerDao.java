@@ -51,4 +51,6 @@ public interface CustomerDao {
 	List<carritoproductoDao> listarProCarri (int id);
 	void eliminarproductocarrito(int id);
 	int idCarrito(int id);
-	}
+
+	String getCorreoUsuario(int id);
+}
