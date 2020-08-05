@@ -247,7 +247,7 @@ public ResponseEntity<List<presets>> getFreePresets(){
 @PostMapping(value="preset/")
 public ResponseEntity<String> addPreset(@ModelAttribute presets model) throws IOException{
 		System.out.println("entra a agregar preset");
-		System.out.println("Llega la foto "+model.getImagenPreset().getOriginalFilename()+" y el archivo "+model.getPreset().getOriginalFilename());
+		System.out.println("Llega la foto "+model.getImagenPreset().getOriginalFilename()+" y el archivo "+model.getPreset().getOriginalFilename()+" con precio "+model.getPrecioPreset());
 		boolean band=servicio.addPreset(model);
 		if(band) {
 			return ResponseEntity.ok("Preset Ingresado");
