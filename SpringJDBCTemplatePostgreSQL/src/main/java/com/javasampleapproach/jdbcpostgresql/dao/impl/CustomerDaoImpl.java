@@ -15,7 +15,6 @@ import com.javasampleapproach.jdbcpostgresql.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -119,7 +118,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				"(CUST_ID, NAME, AGE) VALUES (?, ?, ?)" ;
 		getJdbcTemplate().update(sql, new Object[]{
 				cus.getCustId(), cus.getName(), cus.getAge()
-	
+
  */
 	
 	@Override
@@ -612,7 +611,6 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	@Override
 	public List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito) {
 		List<carritoDetallado>lista = new ArrayList<>();
-		System.out.println("se hace join en el carrito "+idCarrito);
 		String sql="select pre.nombre,pre.precio,pre.descripcion,cpre.id_carrito from presets as pre inner join presetscarrito as cpre on pre.id_preset=cpre.id_carrito where cpre.id_Carrito=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,idCarrito);
 		for(Map<String, Object> row:rows){
@@ -671,7 +669,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	@Override
 	public List<carritoproductoDao> listarProCarri(int id) {
 		String sql="select imagen, nombre, precio,id_carritoproducto from usuario join carritoproducto using (id_carrito)\n" +
-				"join productos using (id_producto) join imagen using (id_imagen) where id_usuario=?";
+				"join productos using (id_producto) join imagen using (id_imagen) where id_carrito=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
 		List<carritoproductoDao> result = new ArrayList<carritoproductoDao>();
 		for(Map<String, Object> row:rows){
@@ -686,14 +684,27 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	}
 
 	@Override
-	public String getCorreoUsuario(int id) {
-String sql = "SELECT correo_usuario FROM usuario where  id_usuario='"+id+"'";
-		
-		String total = getJdbcTemplate().queryForObject(sql, String.class);
-		System.out.println("Elcorreo es "+total);
-		return total;
+	public void eliminarproductocarrito(int id) {
+		String sql="DELETE FROM carritoproducto where id_carritoproducto=?";
+		getJdbcTemplate().update(sql,id);
 	}
-	
+
+	@Override
+	public int idCarrito(int id) {
+		String sql = "select id_carrito from usuario where id_usuario=?";
+		return getJdbcTemplate().queryForObject(sql, new Object[]{id}, new RowMapper<Integer>(){
+			@Override
+			public Integer mapRow(ResultSet rs, int rwNumber) throws SQLException {
+				int a=rs.getInt("id_carrito");
+				return a;
+			}
+		});
+	}
+
+	@Override
+	public String getCorreoUsuario(int id) {
+		return null;
+	}
 
 }
 
