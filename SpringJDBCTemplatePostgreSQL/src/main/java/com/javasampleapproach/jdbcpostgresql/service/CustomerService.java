@@ -52,6 +52,6 @@ public interface CustomerService {
 	void actualizarDataUsuario(String nom,String ape,String contra,int id);
 	List<carritoproductoDao> listarProCarri (int id);
 	int idCarrito(int id);
-
+	boolean addPresetCarrito(presetcarrito preset);
 	String getCorreoUsuario(int id_usuario);
 }
