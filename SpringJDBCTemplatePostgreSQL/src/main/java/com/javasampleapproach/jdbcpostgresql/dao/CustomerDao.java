@@ -51,6 +51,6 @@ public interface CustomerDao {
 	List<carritoproductoDao> listarProCarri (int id);
 	void eliminarproductocarrito(int id);
 	int idCarrito(int id);
-
+	boolean addPresetCarrito(presetcarrito preset);
 	String getCorreoUsuario(int id);
 }

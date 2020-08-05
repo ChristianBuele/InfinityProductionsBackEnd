@@ -5,6 +5,8 @@ public class carritoDetallado {
 	private double precioProducto;
 	private int idCarrito;
 	private String descripcion;
+	private byte[] imagen;
+	private int idCarritoPre;
 	public String getNombreProducto() {
 		return nombreProducto;
 	}
@@ -29,5 +31,18 @@ public class carritoDetallado {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	public byte[] getImagen() {
+		return imagen;
+	}
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
+	}
+	public int getIdCarritoPre() {
+		return idCarritoPre;
+	}
+	public void setIdCarritoPre(int idCarritoPre) {
+		this.idCarritoPre = idCarritoPre;
+	}
+	
 	
 }

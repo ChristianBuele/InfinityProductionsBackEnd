@@ -611,7 +611,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 	@Override
 	public List<carritoDetallado> getCarritoDetalladoPresets(int idCarrito) {
 		List<carritoDetallado>lista = new ArrayList<>();
-		String sql="select pre.nombre,pre.precio,pre.descripcion,cpre.id_carrito from presets as pre inner join presetscarrito as cpre on pre.id_preset=cpre.id_carrito where cpre.id_Carrito=?";
+		String sql="select distinct id_carritopreset,nombre,precio,descripcion,imagen,id_carrito from presets join presetscarrito using(id_preset) where id_Carrito=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,idCarrito);
 		for(Map<String, Object> row:rows){
 			carritoDetallado nuevo= new carritoDetallado();
@@ -619,6 +619,8 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			nuevo.setPrecioProducto((double)row.get("precio"));
 			nuevo.setIdCarrito((Integer)row.get("id_carrito"));
 			nuevo.setDescripcion((String)row.get("descripcion"));
+			nuevo.setImagen((byte [])row.get("imagen"));
+			nuevo.setIdCarritoPre((Integer)row.get("id_carritopreset"));
 			lista.add(nuevo);
 		}
 		return lista;
@@ -703,7 +705,22 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 
 	@Override
 	public String getCorreoUsuario(int id) {
-		return null;
+		String sql="select correo_usuario from usuario where id_usuario='"+id+"'";
+		String correo=(String)getJdbcTemplate().queryForObject(sql, String.class);
+		return correo;
+	}
+
+	@Override
+	public boolean addPresetCarrito(presetcarrito preset) {
+		String sql ="INSERT INTO presetscarrito (id_carrito,id_preset,fecha) values (?,?,?)";
+		try {
+		getJdbcTemplate().update(sql, new Object[]{
+				preset.getId_carrito(),preset.getId_preset(),preset.getFecha()});
+		return true;
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
 	}
 
 }

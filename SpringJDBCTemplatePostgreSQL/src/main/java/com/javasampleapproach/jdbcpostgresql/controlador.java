@@ -365,6 +365,19 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 			return ResponseEntity.ok(x);
 		}
 	}
+	@PostMapping("preCarrito/")
+	public ResponseEntity<String> addPresetCarrito(@RequestBody presetcarrito pre){
+		System.out.println("Entra a agregar preset al carrito el usuario "+pre.getId_usuario()+"el preset "+pre.getId_preset()+" con fecha "+pre.getFecha());
+		int idCarrito=servicio.getDatosUsuario(pre.getId_usuario()).getId_carrito();
+		System.out.println("El id encontrado es "+idCarrito);
+		pre.setId_carrito(idCarrito);
+		boolean band=servicio.addPresetCarrito(pre);
+		if(band) {
+			return ResponseEntity.ok("True");
+		}
+		return ResponseEntity.ok("False");
+		
+	}
 	
 	
 	@GetMapping(value = "listarEventos/", produces = "application/json")
@@ -434,6 +447,16 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		}
 	
 	}
+	@PostMapping("productosCarrito/{id}")
+	public ResponseEntity<List<carritoDetallado>> getCarritoPreset(@PathVariable("id")Integer id){
+		System.out.println("Se busca el id "+id);
+		int id_carrito=servicio.getDatosUsuario(id).getId_carrito(); 
+		System.out.println("Se cuentra el carrito "+id_carrito);
+		List<carritoDetallado> listaPresets=servicio.getCarritoDetalladoPresets(id_carrito);
+		 System.out.println("se van "+listaPresets.size());
+		 return ResponseEntity.ok(listaPresets);
+	}
+	
 	public void generarFactura(int id_carrito,String correo) {
 		List<carritoDetallado> listaProductos=servicio.getCarritoDetalladoProductos(id_carrito);
 	    List<carritoDetallado> listaPresets=servicio.getCarritoDetalladoPresets(id_carrito);
