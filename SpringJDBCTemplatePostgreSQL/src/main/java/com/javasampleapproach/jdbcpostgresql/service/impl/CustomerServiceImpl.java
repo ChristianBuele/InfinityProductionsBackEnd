@@ -251,6 +251,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public void hola() {
 
 	}
+	@Override
+	public String getCorreoUsuario(int id) {
+		return customerDao.getCorreoUsuario(id);
+	}
 
 	@Override
 	public void eliminarproductocarrito(int id) {

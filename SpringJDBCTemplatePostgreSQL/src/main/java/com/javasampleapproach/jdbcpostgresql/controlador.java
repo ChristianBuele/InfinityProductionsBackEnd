@@ -54,17 +54,27 @@ public class controlador {
  @RequestMapping("files/{nombreArchivo}")
 	@ResponseBody
 	public void descargar(@PathVariable("nombreArchivo") String nombreArchivo,HttpServletResponse response) {
-	 System.out.println("Entra a descargar");
+	 System.out.println("Entra a descargar "+nombreArchivo);
 	 try {
 		Files.deleteIfExists(Paths.get("presets.zip"));
 	} catch (IOException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
-		ArrayList<String> lista=new ArrayList<>();
-		lista.add("Portrait Saturation");
-		lista.add("Vintage Cold");
+	 	Cifrado x=new Cifrado();
+	 	nombreArchivo=x.rotar(nombreArchivo, -1).replace('+',' ');
+	 	String [] m=nombreArchivo.split(",");
+	 	ArrayList<String> lista=new ArrayList<>();
+	 	try {
+	 		for(int i=0;i<m.length;i++) {
+	 			lista.add(m[i]);
+	 		}
+	 	}catch(Exception e) {
+	 		System.out.println("Error al cifrar");
+	 	}
+		System.out.println(lista);
 		List<presets> presetsLista=servicio.getPreset(lista);
+		
 		compresor comprimir=new compresor(presetsLista);
 		comprimir.comprimir();
 		
@@ -387,7 +397,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		double saldo=servicio.saldoTarjeta(pago.getId_tarjeta());
 		System.out.println("El saldo que llega es="+saldo);
 		double nuevoSaldo=saldo-pago.getPrecio_final();
-		
+	
 		if(nuevoSaldo<0.0) {
 			return ResponseEntity.ok("Fondos Insuficientes");
 		}else {
@@ -400,6 +410,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				nuevaFactura.setId_usuario(pago.getId_usuario());
 				nuevaFactura.setFecha_factura(fechaVenta);
 				servicio.insertarFactura(nuevaFactura);
+				int id_carrito=servicio.getDatosUsuario(pago.getId_usuario()).getId_carrito();
 				pago.setId_factura(servicio.getIdFactura());
 				pago.setId_carrito(servicio.getDatosUsuario(pago.getId_usuario()).getId_carrito());
 				String fiesta=pago.getDireccion_evento().replace('(', ' ').replace(')',' ');
@@ -410,7 +421,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 				servicio.addValorCarrito(pago.getId_carrito(), pago.getPrecio_final());//agrego el valor al carrito
 				int nuevoCarrito=this.crearCarrito();
 				servicio.actualizarIdCarrito(pago.getId_usuario(), nuevoCarrito);//entrego un nuevo carrito al usaurio
-				generarFactura(pago.getId_carrito());//voy a generar la factura
+				String correoUs=servicio.getCorreoUsuario(pago.getId_usuario());
+				generarFactura(id_carrito,correoUs);//voy a generar la factura
 				return ResponseEntity.ok("true");
 			}else {
 				return ResponseEntity.ok("Error al ejecutar el pago");
@@ -418,11 +430,13 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		}
 	
 	}
-	public void generarFactura(int id_carrito) {
+	public void generarFactura(int id_carrito,String correo) {
 		List<carritoDetallado> listaProductos=servicio.getCarritoDetalladoProductos(id_carrito);
 	    List<carritoDetallado> listaPresets=servicio.getCarritoDetalladoPresets(id_carrito);
 	    System.out.print("productos"+listaProductos.size()+" listaPresets="+listaPresets.size());
-		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets);
+	    
+	    
+		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
 		fact.start();
 	}
 	@GetMapping("listarFacturas/{id}")

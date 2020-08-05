@@ -12,6 +12,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.javasampleapproach.jdbcpostgresql.model.Cifrado;
 import com.javasampleapproach.jdbcpostgresql.model.carritoDetallado;
 import com.javasampleapproach.jdbcpostgresql.model.carritoproducto;
 import com.javasampleapproach.jdbcpostgresql.model.eventosDao;
@@ -19,6 +20,8 @@ import com.javasampleapproach.jdbcpostgresql.model.eventosDao;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 
@@ -83,14 +86,19 @@ public class ListarEventosPdf {
         }
         return new ByteArrayInputStream(out.toByteArray());
     }
-    public static ByteArrayInputStream factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
-    	System.out.println("Hay");
+    public static String factura(List<carritoDetallado> eventos,List<carritoDetallado> presets) {
+    	String presetsNombres="";
+    	double total=0.0;
+    	System.out.println("Hay "+eventos.size()+" presets "+presets.size());
+    	SecureRandom random = new SecureRandom();
+    	String nomFactura=  new BigInteger(50, random).toString(16)+".pdf";
+    	
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-			PdfWriter.getInstance(document, new FileOutputStream("factura.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(nomFactura));
 			Image header=Image.getInstance("src/main/java/com/javasampleapproach/jdbcpostgresql/img/logo.png");
-			header.scaleToFit(650,1000);
+			header.scaleToFit(650,700);
 			header.setAlignment(Chunk.ALIGN_CENTER);
 			
 			Paragraph parrafo= new Paragraph();
@@ -111,24 +119,45 @@ public class ListarEventosPdf {
 					tabla.addCell(eventos.get(i).getNombreProducto());
 					tabla.addCell(Double.toString(eventos.get(i).getPrecioProducto()));
 					tabla.addCell(eventos.get(i).getDescripcion());
-					
+					total+=eventos.get(i).getPrecioProducto();
 				}
 				
 			}
 			if(presets!=null && presets.size()!=0) {
 				for(int i=0;i<presets.size();i++) {
+					presetsNombres+=presets.get(i).getNombreProducto()+",";
 					tabla.addCell(presets.get(i).getNombreProducto());
 					tabla.addCell(Double.toString(presets.get(i).getPrecioProducto()));
 					tabla.addCell(presets.get(i).getDescripcion());
+					total+=presets.get(i).getPrecioProducto();
 					
 				}
 				
 			}
+			tabla.addCell("Total a cancelado");
+			
+			
+			tabla.addCell(Double.toString(total));
+			tabla.addCell("");
 			document.add(tabla);
+			if(presets!=null && presets.size()!=0) {
+				Paragraph parrafo1= new Paragraph();
+				parrafo1.setAlignment(Paragraph.ALIGN_CENTER);
+				parrafo1.add("\nPresets Link\n");
+				parrafo1.setFont(FontFactory.getFont("Tahoma",16,Font.BOLD,BaseColor.DARK_GRAY));
+				Cifrado x=new Cifrado();
+				System.out.println("Los nombres a cifrar son "+presetsNombres);
+				String link="http://localhost:8082/api/producto/files/"+x.rotar(presetsNombres, 1).replace(' ','+');
+				System.out.println("El link es "+link);
+				parrafo1.add(link);
+				document.add(parrafo1);
+			}
+		
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
         document.close();
-        return new ByteArrayInputStream(out.toByteArray());
+        
+        return nomFactura;
     }
 }
