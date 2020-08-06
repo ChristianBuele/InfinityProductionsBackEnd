@@ -53,4 +53,5 @@ public interface CustomerDao {
 	int idCarrito(int id);
 	boolean addPresetCarrito(presetcarrito preset);
 	String getCorreoUsuario(int id);
+	boolean eliminarPresetCarrito(int id);
 }

@@ -723,5 +723,20 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		}
 	}
 
+	@Override
+	public boolean eliminarPresetCarrito(int id) {
+		try {
+		String sql ="delete from presetscarrito where id_carritopreset=?";
+		getJdbcTemplate().update(sql, new Object[]{id});
+		return true;
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		
+		
+		
+	}
+
 }
 
