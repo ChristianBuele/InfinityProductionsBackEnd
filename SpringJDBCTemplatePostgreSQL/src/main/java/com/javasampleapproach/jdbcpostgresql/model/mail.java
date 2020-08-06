@@ -33,18 +33,9 @@ public class mail {
     
     @Autowired
     private JavaMailSender javaMailSender;
-    public void sendEmail() throws Exception{
-             MimeMessage message = javaMailSender.createMimeMessage();
-             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-             helper.setTo("correoUsuario");
-             helper.setText("<html><body><h1>Gracias por su compra!</h1><body></html>", true);
-             FileSystemResource file  = new FileSystemResource(new File(nombreArchivo));
-             helper.addAttachment("testfile", file);
-             helper.addAttachment("factura.pdf", new ClassPathResource(nombreArchivo));
-             helper.setSubject("Hi");
-             javaMailSender.send(message);
-       }
+   
 
+   
 	public void sendCorreo(){
 
         // Recipient's email ID needs to be mentioned.
