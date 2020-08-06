@@ -330,11 +330,13 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
-
+		try {
 		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?,?)";
 		assert getJdbcTemplate()!=null;
 		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),carritoproducto.getCantidad());
-
+		}catch(Exception e) {
+			System.out.println("se dania agregando prod al carrito"+e.getMessage());
+		}
 		return carritoproducto;
 	}
 

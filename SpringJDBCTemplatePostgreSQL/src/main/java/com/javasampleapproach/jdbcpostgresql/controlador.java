@@ -362,13 +362,14 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	@PostMapping("productocarrito")
 	public ResponseEntity<HashMap<String,String>> addcarritoProducto(@RequestBody carritoproducto carritoproducto){
-		System.out.println("ENTROOOOO"+carritoproducto.getId_carrito());
+		System.out.println("Agregar al carrito "+carritoproducto.getId_carrito()+" el producto "+carritoproducto.getId_producto());
  		HashMap<String,String> x=new HashMap<String,String>();
 		try {
 			carritoproducto cp=servicio.insertarcarritoProducto(carritoproducto);
 			x.put("respuesta","true");
 			return ResponseEntity.ok(x);
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			x.put("respuesta","false");
 			return ResponseEntity.ok(x);
 		}
