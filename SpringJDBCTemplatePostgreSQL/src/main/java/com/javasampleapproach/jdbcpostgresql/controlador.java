@@ -395,6 +395,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	
 	@PostMapping(value="updateUser/")
 	public ResponseEntity<String> actualizarUsuario(@RequestBody usuario user){
+		System.out.println("actualizando datos de usuario "+user.getNombre_usuario());
 		try {
 			servicio.actualizarDataUsuario(user.getNombre_usuario(), user.getApellido_usuario(), user.getContrasenia_usuario(), user.getId_usuario());
 			return ResponseEntity.ok("Datos Actualizados");
