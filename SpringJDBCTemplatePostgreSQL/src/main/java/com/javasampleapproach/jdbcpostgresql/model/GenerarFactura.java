@@ -13,6 +13,7 @@ public class GenerarFactura extends Thread {
 	List<carritoDetallado> listaProductos;
 	List<carritoDetallado> listaPresets;
 	String correo;
+	String nomArchivo;
 	
 
 	public GenerarFactura(List<carritoDetallado> listaProductos, List<carritoDetallado> listaPresets,String correo) {
@@ -27,15 +28,58 @@ public class GenerarFactura extends Thread {
 	public void run() {
 		System.out.println("Generando factura");
 	    ListarEventosPdf x=new ListarEventosPdf();
-	    String a=x.factura(listaProductos, listaPresets);
-	    mail m=new mail(correo,a);
-	    try {
-			m.sendEmail();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	    nomArchivo=x.factura(listaProductos, listaPresets);
+	    mail m=new mail(correo,nomArchivo);
+	    
 	    System.out.print("PDF GUARDADO");
+	}
+
+
+
+	public List<carritoDetallado> getListaProductos() {
+		return listaProductos;
+	}
+
+
+
+	public void setListaProductos(List<carritoDetallado> listaProductos) {
+		this.listaProductos = listaProductos;
+	}
+
+
+
+	public List<carritoDetallado> getListaPresets() {
+		return listaPresets;
+	}
+
+
+
+	public void setListaPresets(List<carritoDetallado> listaPresets) {
+		this.listaPresets = listaPresets;
+	}
+
+
+
+	public String getCorreo() {
+		return correo;
+	}
+
+
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+
+
+	public String getNomArchivo() {
+		return nomArchivo;
+	}
+
+
+
+	public void setNomArchivo(String nomArchivo) {
+		this.nomArchivo = nomArchivo;
 	}
 
 }

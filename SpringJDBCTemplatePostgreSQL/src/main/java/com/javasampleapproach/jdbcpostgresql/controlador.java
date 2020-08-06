@@ -15,16 +15,21 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 import com.javasampleapproach.jdbcpostgresql.model.*;
 import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,7 +48,8 @@ import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 public class controlador {
  @Autowired
  CustomerService servicio;
- 
+ @Autowired
+ private JavaMailSender sender;
  @GetMapping(value="listar/")
  public ResponseEntity<List<Customer>> getEmployees() {
 	 System.out.println("si  eentra");
@@ -466,7 +472,31 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	    
 		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
 		fact.start();
+		while(fact.isAlive()) {
+			
+		}
+		try {
+			sendEmail(fact);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	private void sendEmail(GenerarFactura fact) throws Exception{
+        MimeMessage message = sender.createMimeMessage();
+         
+        // Enable the multipart flag!
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+         
+        helper.setTo(fact.getCorreo());
+        helper.setText("Gracias por su compra");
+        helper.setSubject("Factura");
+         
+        ClassPathResource file = new ClassPathResource(fact.getNomArchivo());
+        helper.addAttachment(fact.getNomArchivo(), file);
+         
+        sender.send(message);
+    }
 	@GetMapping("listarFacturas/{id}")
 	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {
 		List<facturaDao> facturas=new ArrayList<>();
