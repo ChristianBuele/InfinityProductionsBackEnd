@@ -124,8 +124,9 @@ public class controlador {
 		if(!servicio.existeUsuario(usuario.getCorreo_usuario())) {
 			usuario.setId_carrito(crearCarrito());
 			usuario ingresado=servicio.insertarUsuario(usuario);
+			int id=servicio.getIdUsuario(usuario.getCorreo_usuario());
 			if(ingresado!=null) {
-				 return ResponseEntity.ok("true");
+				 return ResponseEntity.ok("true,"+id);
 			}else {
 				 return ResponseEntity.ok("A ocurrido un error al registrar, Intente de nuevo");
 
