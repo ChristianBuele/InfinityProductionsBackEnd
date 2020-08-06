@@ -617,6 +617,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	@GetMapping("tarjeta/{id}")
 	public ResponseEntity<String> eliminarTarjeta(@PathVariable("id")Integer id) {
+		System.out.println("va a eliminar la tarjeta "+id);
 		boolean x=servicio.eliminarTarjeta(id);
 		if(x) {
 			return ResponseEntity.ok("Tarjeta borrada");
