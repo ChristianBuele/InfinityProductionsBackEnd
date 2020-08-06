@@ -400,7 +400,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		fechaActual=ParseFecha(new SimpleDateFormat("dd/MM/yyyy").format(fechaSimple));
 		for (int i=0;i<eventos.size();i++){
 			fecha=ParseFecha(eventos.get(i).getFechaEvento());
-			if(fechaActual.compareTo(fecha)>0) {
+			if(fechaActual.compareTo(fecha)<0) {
 				eventosDao pro=new eventosDao();
 				pro=eventos.get(i);
 				eventosProximos.add(pro);
