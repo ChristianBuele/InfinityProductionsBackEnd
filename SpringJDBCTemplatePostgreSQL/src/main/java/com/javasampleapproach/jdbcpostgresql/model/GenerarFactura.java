@@ -29,7 +29,12 @@ public class GenerarFactura extends Thread {
 	    ListarEventosPdf x=new ListarEventosPdf();
 	    String a=x.factura(listaProductos, listaPresets);
 	    mail m=new mail(correo,a);
-	    m.sendCorreo();
+	    try {
+			m.sendEmail();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    System.out.print("PDF GUARDADO");
 	}
 

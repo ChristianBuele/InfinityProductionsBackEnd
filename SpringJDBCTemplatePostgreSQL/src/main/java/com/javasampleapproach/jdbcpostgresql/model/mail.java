@@ -15,6 +15,12 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
 public class mail {
 	String correoUsuario;
 	String nombreArchivo;
@@ -24,6 +30,20 @@ public class mail {
 		this.correoUsuario = correoUsuario;
 		this.nombreArchivo = nombreArchivo;
 	}
+    
+    @Autowired
+    private JavaMailSender javaMailSender;
+    public void sendEmail() throws Exception{
+             MimeMessage message = javaMailSender.createMimeMessage();
+             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+             helper.setTo("correoUsuario");
+             helper.setText("<html><body><h1>Gracias por su compra!</h1><body></html>", true);
+             FileSystemResource file  = new FileSystemResource(new File(nombreArchivo));
+             helper.addAttachment("testfile", file);
+             helper.addAttachment("factura.pdf", new ClassPathResource(nombreArchivo));
+             helper.setSubject("Hi");
+             javaMailSender.send(message);
+       }
 
 	public void sendCorreo(){
 
