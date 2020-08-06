@@ -287,7 +287,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		System.out.println("esta enviando 1");
 		System.out.println("id"+id);
  		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
-		lista=servicio.listarProCarri(id);
+ 		int idCarrito=servicio.getDatosUsuario(id).getId_carrito();
+		lista=servicio.listarProCarri(idCarrito);
 		for (int i=0;i<lista.size();i++){
 			lista.get(i).setImagen(decompressBytes(lista.get(i).getImagen()));
 		}
