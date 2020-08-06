@@ -265,5 +265,10 @@ public class CustomerServiceImpl implements CustomerService{
 		// TODO Auto-generated method stub
 		return customerDao.addPresetCarrito(preset);
 	}
+	@Override
+	public boolean eliminarPresetCarrito(int id) {
+		// TODO Auto-generated method stub
+		return customerDao.eliminarPresetCarrito(id);
+	}
 
 }
