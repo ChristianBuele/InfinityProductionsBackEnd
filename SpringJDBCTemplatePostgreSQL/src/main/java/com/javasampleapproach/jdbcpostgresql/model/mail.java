@@ -32,9 +32,23 @@ public class mail {
 	}
     
     @Autowired
-    private JavaMailSender javaMailSender;
+    private JavaMailSender sender;
    
-
+    public void sendEmail() throws Exception{
+        MimeMessage message = sender.createMimeMessage();
+         
+        // Enable the multipart flag!
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+         
+        helper.setTo(correoUsuario);
+        helper.setText("Gracias por su compra");
+        helper.setSubject("Factura");
+         
+        ClassPathResource file = new ClassPathResource(nombreArchivo);
+        helper.addAttachment(nombreArchivo, file);
+         
+        sender.send(message);
+    }
    
 	public void sendCorreo(){
 

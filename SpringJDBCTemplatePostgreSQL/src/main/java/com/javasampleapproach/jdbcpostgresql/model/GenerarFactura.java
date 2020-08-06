@@ -4,7 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
@@ -14,8 +19,8 @@ public class GenerarFactura extends Thread {
 	List<carritoDetallado> listaPresets;
 	String correo;
 	String nomArchivo;
-	
-
+	 @Autowired
+	 private JavaMailSender sender;
 	public GenerarFactura(List<carritoDetallado> listaProductos, List<carritoDetallado> listaPresets,String correo) {
 		super();
 		this.listaProductos = listaProductos;
@@ -30,11 +35,11 @@ public class GenerarFactura extends Thread {
 	    ListarEventosPdf x=new ListarEventosPdf();
 	    nomArchivo=x.factura(listaProductos, listaPresets);
 	    mail m=new mail(correo,nomArchivo);
-	    
+	   m.sendCorreo();
 	    System.out.print("PDF GUARDADO");
 	}
 
-
+	
 
 	public List<carritoDetallado> getListaProductos() {
 		return listaProductos;

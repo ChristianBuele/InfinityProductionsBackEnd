@@ -474,31 +474,9 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	    
 		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
 		fact.start();
-		while(fact.isAlive()) {
-			
-		}
-		try {
-			sendEmail(fact);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
-	private void sendEmail(GenerarFactura fact) throws Exception{
-        MimeMessage message = sender.createMimeMessage();
-         
-        // Enable the multipart flag!
-        MimeMessageHelper helper = new MimeMessageHelper(message,true);
-         
-        helper.setTo(fact.getCorreo());
-        helper.setText("Gracias por su compra");
-        helper.setSubject("Factura");
-         
-        ClassPathResource file = new ClassPathResource(fact.getNomArchivo());
-        helper.addAttachment(fact.getNomArchivo(), file);
-         
-        sender.send(message);
-    }
+	
 	@GetMapping("listarFacturas/{id}")
 	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {
 		List<facturaDao> facturas=new ArrayList<>();
