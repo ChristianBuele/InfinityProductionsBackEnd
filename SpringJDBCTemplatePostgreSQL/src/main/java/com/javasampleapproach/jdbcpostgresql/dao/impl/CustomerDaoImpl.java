@@ -133,7 +133,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	@Override
 	public usuario insertarUsuario(usuario usuario) {
 		String sql ="INSERT INTO usuario (id_carrito,nombre_usuario,apellido_usuario,correo_usuario,contrasenia_usuario,rol,estado)" + 
-				"values (?,?,?,?,?,?)";
+				"values (?,?,?,?,?,?,?)";
 		getJdbcTemplate().update(sql, new Object[]{
 				usuario.getId_carrito(),usuario.getNombre_usuario(),usuario.getApellido_usuario(),usuario.getCorreo_usuario(),usuario.getContrasenia_usuario(),usuario.getRol(),"activo"});
 		return usuario;
@@ -773,6 +773,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			getJdbcTemplate().update(sql,estado,id);
 			return true;
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
