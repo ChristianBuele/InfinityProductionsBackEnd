@@ -393,6 +393,17 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		return ResponseEntity.ok(ev);
 	}
 	
+	@PostMapping(value="updateUser/")
+	public ResponseEntity<String> actualizarUsuario(@RequestBody usuario user){
+		try {
+			servicio.actualizarDataUsuario(user.getNombre_usuario(), user.getApellido_usuario(), user.getContrasenia_usuario(), user.getId_usuario());
+			return ResponseEntity.ok("Datos Actualizados");
+		} catch (Exception e) {
+			return ResponseEntity.ok("Intente de nuevo");
+		}
+	
+	}
+	
 	@GetMapping(value="eliminarpc/")
 	public ResponseEntity<String> eliminarPresetCarrito(@PathVariable("id")String datos){
 		System.out.println("Eliminando preset del carrito "+datos);
