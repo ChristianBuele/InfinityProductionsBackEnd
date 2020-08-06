@@ -55,4 +55,7 @@ public interface CustomerDao {
 	String getCorreoUsuario(int id);
 	boolean eliminarPresetCarrito(int id);
 	boolean eliminarTarjeta(int id);
+	List<usuario> cargarUsuario();
+	boolean actualizarEstadoUsuario(int id,String estado);
+	
 }

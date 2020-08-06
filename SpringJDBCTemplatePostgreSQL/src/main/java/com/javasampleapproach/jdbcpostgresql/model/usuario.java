@@ -8,6 +8,7 @@ private String apellido_usuario;
 private String correo_usuario;
 private String contrasenia_usuario;
 private String rol;
+String estado;
 public usuario() {
 	
 }
@@ -20,6 +21,12 @@ public usuario(int id_usuario, int id_carrito, String nombre_usuario, String ape
 	this.correo_usuario = correo_usuario;
 	this.contrasenia_usuario = contrasenia_usuario;
 	this.rol = rol;
+}
+public String getEstado() {
+	return estado;
+}
+public void setEstado(String estado) {
+	this.estado = estado;
 }
 public int getId_usuario() {
 	return id_usuario;

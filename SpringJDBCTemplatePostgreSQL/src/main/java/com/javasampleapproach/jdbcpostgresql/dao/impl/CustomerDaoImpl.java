@@ -132,10 +132,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public usuario insertarUsuario(usuario usuario) {
-		String sql ="INSERT INTO usuario (id_carrito,nombre_usuario,apellido_usuario,correo_usuario,contrasenia_usuario,rol)" + 
+		String sql ="INSERT INTO usuario (id_carrito,nombre_usuario,apellido_usuario,correo_usuario,contrasenia_usuario,rol,estado)" + 
 				"values (?,?,?,?,?,?)";
 		getJdbcTemplate().update(sql, new Object[]{
-				usuario.getId_carrito(),usuario.getNombre_usuario(),usuario.getApellido_usuario(),usuario.getCorreo_usuario(),usuario.getContrasenia_usuario(),usuario.getRol()});
+				usuario.getId_carrito(),usuario.getNombre_usuario(),usuario.getApellido_usuario(),usuario.getCorreo_usuario(),usuario.getContrasenia_usuario(),usuario.getRol(),"activo"});
 		return usuario;
 	}
 
@@ -250,10 +250,10 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public boolean existeUsuario(String correo) {
-		String sql = "SELECT correo_usuario from usuario where correo_usuario = ?";
+		String sql = "SELECT correo_usuario from usuario where correo_usuario = ? and estado=?";
 		System.out.println("la consulta es "+sql );
 		try {
-		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<usuario>(){
+		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo,"activo"}, new RowMapper<usuario>(){
 			@Override
 			public usuario mapRow(ResultSet rs, int rwNumber) throws SQLException {
 				usuario cus=new usuario();
@@ -749,6 +749,34 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			return false;
 		}
 	}
+
+	@Override
+	public List<usuario> cargarUsuario() {
+		String sql="select * from usuario where estado=?  or estado=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,"activo","bloqueado");
+		List<usuario> result = new ArrayList<usuario>();
+		for(Map<String, Object> row:rows){
+			usuario nu=new usuario();
+			nu.setId_usuario((Integer)row.get("id_usuario"));
+			nu.setNombre_usuario((String)row.get("nombre_usuario"));
+			nu.setEstado((String)row.get("estado"));
+			result.add(nu);
+		}
+		return result;
+	}
+
+	@Override
+	public boolean actualizarEstadoUsuario(int id, String estado) {
+		String sql="update usuario set estado=? where id_usuario=?";
+		assert getJdbcTemplate() !=null;
+		try {
+			getJdbcTemplate().update(sql,estado,id);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	
 
 }
 
