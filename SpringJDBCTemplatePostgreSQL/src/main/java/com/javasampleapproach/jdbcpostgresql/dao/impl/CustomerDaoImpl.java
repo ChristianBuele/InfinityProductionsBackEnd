@@ -228,6 +228,25 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 		return result;
 	}
 	@Override
+	public List<productos>listarProductos(){
+		String sql = "select id_producto,id_imagen, precio,nombre,descripcion,categoria from productos where estado='activo'";
+
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+
+		List<productos> result = new ArrayList<>();
+		for(Map<String, Object> row:rows){
+			productos cus=new productos();
+			cus.setId_producto((Integer)row.get("id_producto"));
+			cus.setImagen((Integer)row.get("id_imagen"));
+			cus.setPrecio((double)row.get("precio"));
+			cus.setNombre((String)row.get("nombre"));
+			cus.setDescripcion((String)row.get("descripcion"));
+			cus.setCategoria((String)row.get("categoria"));
+			result.add(cus);
+		}
+		return result;
+	}
+	@Override
 	public int getIdUsuario(String correo) {
 		
 		String sql="select id_usuario from usuario where correo_usuario=?";

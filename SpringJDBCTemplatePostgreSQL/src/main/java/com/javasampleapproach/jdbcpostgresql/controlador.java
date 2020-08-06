@@ -603,6 +603,10 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	public ResponseEntity<List<usuario>> getUsuarios(){
 		return ResponseEntity.ok(servicio.cargarUsuario());
 	}
+	@GetMapping(value = "produ")
+	public ResponseEntity<List<productos>> produ(){
+ 		return ResponseEntity.ok(servicio.listarProductos());
+	}
 }
  
  
