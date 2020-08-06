@@ -54,5 +54,8 @@ public interface CustomerService {
 	int idCarrito(int id);
 	boolean addPresetCarrito(presetcarrito preset);
 	String getCorreoUsuario(int id_usuario);
+	boolean eliminarTarjeta(int id);
 	boolean eliminarPresetCarrito(int id);
+	List<usuario> cargarUsuario();
+	boolean actualizarEstadoUsuario(int id,String estado);
 }

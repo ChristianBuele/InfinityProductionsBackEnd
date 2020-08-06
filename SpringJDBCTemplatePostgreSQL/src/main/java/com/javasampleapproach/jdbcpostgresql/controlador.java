@@ -562,6 +562,36 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
  			return ResponseEntity.ok(false);
 		}
 	}
+	@GetMapping("tarjeta/{id}")
+	public ResponseEntity<String> eliminarTarjeta(@PathVariable("id")Integer id) {
+		System.out.println("va a eliminar la tarjeta "+id);
+		boolean x=servicio.eliminarTarjeta(id);
+		if(x) {
+			return ResponseEntity.ok("Tarjeta borrada");
+		}
+		return ResponseEntity.ok("Tarjeta No borrada");
+		
+	}
+	@PostMapping(value="actuaEstadoUsuario/{cadena}")
+	public ResponseEntity<String> actualizarEstadoUsuario(@PathVariable("cadena")String cadena){
+		System.out.println("actualizando "+cadena);
+		try {
+			String [] datos=cadena.split(",");
+			int id=Integer.parseInt(datos[0]);
+			String estado=datos[1];
+			boolean x=servicio.actualizarEstadoUsuario(id, estado);
+			if(x) {
+				return ResponseEntity.ok("Tarea Completa");
+			}
+			return ResponseEntity.ok("Intente otra vez");
+		} catch (Exception e) {
+			return ResponseEntity.ok("Intente otra vez");
+		}
+	}
+	@PostMapping(value="obtenerUsuarios/")
+	public ResponseEntity<List<usuario>> getUsuarios(){
+		return ResponseEntity.ok(servicio.cargarUsuario());
+	}
 }
  
  
