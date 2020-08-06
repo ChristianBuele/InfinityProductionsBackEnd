@@ -627,6 +627,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	@PostMapping(value="actuaEstadoUsuario/{cadena}")
 	public ResponseEntity<String> actualizarEstadoUsuario(@PathVariable("cadena")String cadena){
+		System.out.println("actualizando "+cadena);
 		try {
 			String [] datos=cadena.split(",");
 			int id=Integer.parseInt(datos[0]);
