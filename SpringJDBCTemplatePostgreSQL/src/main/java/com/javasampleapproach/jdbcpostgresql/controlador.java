@@ -412,7 +412,7 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		try {
 			int id_usuario=Integer.parseInt(valores[0]);
 			int id_preset=Integer.parseInt(valores[1]);
-			boolean x=servicio.eliminarPresetCarrito(id_preset);
+			boolean x=servtaricio.eliminarPresetCarrito(id_preset);
 			if(x) {
 				usuario us=servicio.getDatosUsuario(id_usuario);
 				List<carritoDetallado> lista= servicio.getCarritoDetalladoPresets(us.getId_carrito());
@@ -614,6 +614,15 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		}catch (Exception e){
  			return ResponseEntity.ok(false);
 		}
+	}
+	@GetMapping("tarjeta/{id}")
+	public ResponseEntity<String> eliminarTarjeta(@PathVariable("id")Integer id) {
+		boolean x=servicio.eliminarTarjeta(id);
+		if(x) {
+			return ResponseEntity.ok("Tarjeta borrada");
+		}
+		return ResponseEntity.ok("Tarjeta No borrada");
+		
 	}
 }
  

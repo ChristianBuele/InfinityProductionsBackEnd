@@ -141,9 +141,9 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public tarjeta ingresarTarjeta(tarjeta tarjeta) {
-		String sql ="insert into tarjeta (id_usuariot,num_tarjeta,nombre_tarjeta,mes_expiracion,anio_expiracion,ccv_tarjeta) " + 
+		String sql ="insert into tarjeta (id_usuariot,num_tarjeta,nombre_tarjeta,mes_expiracion,anio_expiracion,ccv_tarjeta,estado) " + 
 				"values (?,?,?,?,?,?)";
-		getJdbcTemplate().update(sql, new Object[]{tarjeta.getId_usuariot(),tarjeta.getNum_tarjeta(),tarjeta.getNombre_tarjeta(),tarjeta.getMes_expiracion(),tarjeta.getAnio_expiracion(),tarjeta.getCcv_tarjeta()});
+		getJdbcTemplate().update(sql, new Object[]{tarjeta.getId_usuariot(),tarjeta.getNum_tarjeta(),tarjeta.getNombre_tarjeta(),tarjeta.getMes_expiracion(),tarjeta.getAnio_expiracion(),tarjeta.getCcv_tarjeta(),1});
 		return tarjeta;
 	}
 
@@ -447,8 +447,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 
 	public List<tarjeta> findTarjeta(int id) {
-		String sql = "select * from tarjeta where id_usuariot= ?";
-		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
+		String sql = "select * from tarjeta where id_usuariot= ? and estado=?";
+		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id,1);
 		List<tarjeta> result = new ArrayList<tarjeta>();
 		for(Map<String, Object> row:rows){
 			tarjeta tar=new tarjeta();
@@ -736,6 +736,18 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 		
 		
 		
+	}
+
+	@Override
+	public boolean eliminarTarjeta(int id) {
+		String sql="update tarjeta set estado=? where id_tarjeta=?";
+		assert getJdbcTemplate() !=null;
+		try {
+			getJdbcTemplate().update(sql,0,id);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
 	}
 
 }
