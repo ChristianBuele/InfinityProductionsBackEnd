@@ -9,8 +9,18 @@ private int mes_expiracion;
 private int anio_expiracion;
 private int ccv_tarjeta;
 private double saldo;
-public tarjeta(int id_tarjeta, int id_usuariot, String num_tarjeta, String nombre_tarjeta, int mes_expiracion,
-		int anio_expiracion, int ccv_tarjeta) {
+private int estado;
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public tarjeta(int id_tarjeta, int id_usuariot, String num_tarjeta, String nombre_tarjeta, int mes_expiracion,
+				   int anio_expiracion, int ccv_tarjeta) {
 	this.id_tarjeta = id_tarjeta;
 	this.id_usuariot = id_usuariot;
 	this.num_tarjeta = num_tarjeta;
