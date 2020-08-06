@@ -15,6 +15,12 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
 public class mail {
 	String correoUsuario;
 	String nombreArchivo;
@@ -24,7 +30,26 @@ public class mail {
 		this.correoUsuario = correoUsuario;
 		this.nombreArchivo = nombreArchivo;
 	}
-
+    
+    @Autowired
+    private JavaMailSender sender;
+   
+    public void sendEmail() throws Exception{
+        MimeMessage message = sender.createMimeMessage();
+         
+        // Enable the multipart flag!
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+         
+        helper.setTo(correoUsuario);
+        helper.setText("Gracias por su compra");
+        helper.setSubject("Factura");
+         
+        ClassPathResource file = new ClassPathResource(nombreArchivo);
+        helper.addAttachment(nombreArchivo, file);
+         
+        sender.send(message);
+    }
+   
 	public void sendCorreo(){
 
         // Recipient's email ID needs to be mentioned.

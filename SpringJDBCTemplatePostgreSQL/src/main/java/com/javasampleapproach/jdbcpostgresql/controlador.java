@@ -15,16 +15,21 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 import com.javasampleapproach.jdbcpostgresql.model.*;
 import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,7 +48,8 @@ import com.javasampleapproach.jdbcpostgresql.service.CustomerService;
 public class controlador {
  @Autowired
  CustomerService servicio;
- 
+ @Autowired
+ private JavaMailSender sender;
  @GetMapping(value="listar/")
  public ResponseEntity<List<Customer>> getEmployees() {
 	 System.out.println("si  eentra");
@@ -124,8 +130,9 @@ public class controlador {
 		if(!servicio.existeUsuario(usuario.getCorreo_usuario())) {
 			usuario.setId_carrito(crearCarrito());
 			usuario ingresado=servicio.insertarUsuario(usuario);
+			int id=servicio.getIdUsuario(usuario.getCorreo_usuario());
 			if(ingresado!=null) {
-				 return ResponseEntity.ok("true");
+				 return ResponseEntity.ok("true,"+id);
 			}else {
 				 return ResponseEntity.ok("A ocurrido un error al registrar, Intente de nuevo");
 
@@ -280,7 +287,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 		System.out.println("esta enviando 1");
 		System.out.println("id"+id);
  		List<carritoproductoDao> lista=new ArrayList<carritoproductoDao>();
-		lista=servicio.listarProCarri(id);
+ 		int idCarrito=servicio.getDatosUsuario(id).getId_carrito();
+		lista=servicio.listarProCarri(idCarrito);
 		for (int i=0;i<lista.size();i++){
 			lista.get(i).setImagen(decompressBytes(lista.get(i).getImagen()));
 		}
@@ -355,13 +363,14 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	}
 	@PostMapping("productocarrito")
 	public ResponseEntity<HashMap<String,String>> addcarritoProducto(@RequestBody carritoproducto carritoproducto){
-		System.out.println("ENTROOOOO"+carritoproducto.getId_carrito());
+		System.out.println("Agregar al carrito "+carritoproducto.getId_carrito()+" el producto "+carritoproducto.getId_producto());
  		HashMap<String,String> x=new HashMap<String,String>();
 		try {
 			carritoproducto cp=servicio.insertarcarritoProducto(carritoproducto);
 			x.put("respuesta","true");
 			return ResponseEntity.ok(x);
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			x.put("respuesta","false");
 			return ResponseEntity.ok(x);
 		}
@@ -465,7 +474,9 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	    
 		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
 		fact.start();
+		
 	}
+	
 	@GetMapping("listarFacturas/{id}")
 	public ResponseEntity<List<facturaDao>> getFacturasCli(@PathVariable("id")Integer id) throws ParseException {
 		List<facturaDao> facturas=new ArrayList<>();

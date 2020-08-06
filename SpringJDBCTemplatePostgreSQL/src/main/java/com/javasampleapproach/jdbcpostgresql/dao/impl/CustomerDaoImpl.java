@@ -133,7 +133,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	@Override
 	public usuario insertarUsuario(usuario usuario) {
 		String sql ="INSERT INTO usuario (id_carrito,nombre_usuario,apellido_usuario,correo_usuario,contrasenia_usuario,rol,estado)" + 
-				"values (?,?,?,?,?,?)";
+				"values (?,?,?,?,?,?,?)";
 		getJdbcTemplate().update(sql, new Object[]{
 				usuario.getId_carrito(),usuario.getNombre_usuario(),usuario.getApellido_usuario(),usuario.getCorreo_usuario(),usuario.getContrasenia_usuario(),usuario.getRol(),"activo"});
 		return usuario;
@@ -329,11 +329,13 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	}
 	@Override
 	public carritoproducto insertarcarritoProducto(carritoproducto carritoproducto) {
-
+		try {
 		String sql="insert into carritoproducto (id_carrito,id_producto,fecha,cantidad) values (?,?,?,?)";
 		assert getJdbcTemplate()!=null;
 		getJdbcTemplate().update(sql,carritoproducto.getId_carrito(),carritoproducto.getId_producto(),carritoproducto.getFecha(),carritoproducto.getCantidad());
-
+		}catch(Exception e) {
+			System.out.println("se dania agregando prod al carrito"+e.getMessage());
+		}
 		return carritoproducto;
 	}
 
@@ -669,11 +671,12 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 
 	@Override
 	public List<carritoproductoDao> listarProCarri(int id) {
-		String sql="select imagen, nombre, precio,id_carritoproducto from usuario join carritoproducto using (id_carrito)\n" +
-				"join productos using (id_producto) join imagen using (id_imagen) where id_carrito=?";
+		System.out.println("se consulta los productos del carrito "+id);
+		String sql="select imagen, nombre, precio,id_carritoproducto from usuario join carritoproducto using (id_carrito) join productos using (id_producto) join imagen using (id_imagen) where id_carrito=?";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql,id);
 		List<carritoproductoDao> result = new ArrayList<carritoproductoDao>();
 		for(Map<String, Object> row:rows){
+			System.out.println("agregando"+result.size());
 			carritoproductoDao carr=new carritoproductoDao();
 			carr.setImagen((byte [])row.get("imagen"));
 			carr.setNombre((String)row.get("nombre"));
@@ -772,6 +775,7 @@ String sql = "SELECT MAX(id_factura) FROM factura";
 			getJdbcTemplate().update(sql,estado,id);
 			return true;
 		}catch(Exception e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}

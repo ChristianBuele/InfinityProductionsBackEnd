@@ -40,12 +40,20 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
 		
 		<dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-oauth2-client</artifactId>
 </dependency>
-
+<dependency>
+	    <groupId>javax.mail</groupId>
+	    <artifactId>mail</artifactId>
+	    <version>1.4.3</version>
+    </dependency>
 
 
 
