@@ -281,7 +281,8 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				return cus;
 			}
 		});
-		if(us.getEstado()=="activo") {
+		System.out.println("el estado encontrado es "+us.getEstado());
+		if(us.getEstado().equals("activo")) {
 			System.out.println("El usuario encontrado "+correo+" esta activo");
 			return true;
 		}
