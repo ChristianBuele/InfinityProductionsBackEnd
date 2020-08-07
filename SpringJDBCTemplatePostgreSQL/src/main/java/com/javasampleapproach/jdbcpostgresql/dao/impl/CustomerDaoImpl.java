@@ -268,19 +268,24 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 	@Override
 	public boolean existeUsuario(String correo) {
-		String sql = "SELECT correo_usuario from usuario where correo_usuario = ? and estado=?";
+		String sql = "SELECT correo_usuario from usuario where correo_usuario = ?";
 		System.out.println("la consulta es "+sql );
 		try {
-		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo,"activo"}, new RowMapper<usuario>(){
+		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<usuario>(){
 			@Override
 			public usuario mapRow(ResultSet rs, int rwNumber) throws SQLException {
 				usuario cus=new usuario();
 				cus.setCorreo_usuario(rs.getString("correo_usuario"));
-				
+				cus.setEstado(rs.getString("estado"));
 				return cus;
 			}
 		});
-		return true;
+		if(us.getEstado()=="activo") {
+			System.out.println("El usuario encontrado "+correo+" esta activo");
+			return true;
+		}
+		System.out.println("El usuario encontrado "+correo+" no esta activoo");
+		return false;
 		}catch(Exception EmptyResultDataAccessException ) {
 			return false;
 		}
