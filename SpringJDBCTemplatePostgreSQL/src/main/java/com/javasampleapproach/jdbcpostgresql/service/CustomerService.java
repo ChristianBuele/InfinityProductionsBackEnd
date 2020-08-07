@@ -27,6 +27,7 @@ public interface CustomerService {
 	boolean addProducto(productos producto);
 	int getIdImagen();
 	List<productoDao> findAllProducts();
+	List<productos> listarProductos();
 	int getIdUsuario(String correo);
 	boolean addPreset(presets preset);
 	List<presets> getPreset(ArrayList<String> nombres);

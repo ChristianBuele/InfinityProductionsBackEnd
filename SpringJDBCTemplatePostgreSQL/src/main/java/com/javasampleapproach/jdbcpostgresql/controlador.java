@@ -177,9 +177,9 @@ public int idImagenMaximo() {
 	 HashMap<String,String> x=new HashMap<String,String>();
 	try {	
 		System.out.println("entra a agregar tarjeta en post "+tarjeta.getNombre_tarjeta());
-		DecimalFormat formato1 = new DecimalFormat("#.00");
-		String nuevoSaldo=formato1.format(Math.random()*15000);
-		tarjeta.setSaldo(Double.parseDouble(nuevoSaldo));
+		//DecimalFormat formato1 = new DecimalFormat("#.00");
+		//String nuevoSaldo=formato1.format(Math.random()*15000);
+		//tarjeta.setSaldo(Double.parseDouble(nuevoSaldo));
 		tarjeta t=servicio.ingresarTarjeta(tarjeta);
 		 
 	 x.put("respuesta","true");
@@ -607,6 +607,10 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	@PostMapping(value="obtenerUsuarios/")
 	public ResponseEntity<List<usuario>> getUsuarios(){
 		return ResponseEntity.ok(servicio.cargarUsuario());
+	}
+	@GetMapping(value = "produ")
+	public ResponseEntity<List<productos>> produ(){
+ 		return ResponseEntity.ok(servicio.listarProductos());
 	}
 }
  

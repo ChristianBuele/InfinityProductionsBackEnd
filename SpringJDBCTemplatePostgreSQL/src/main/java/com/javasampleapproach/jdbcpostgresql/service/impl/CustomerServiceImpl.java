@@ -189,6 +189,11 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
+	public List<productos> listarProductos() {
+		return customerDao.listarProductos();
+	}
+
+	@Override
 	public int getIdUsuario(String correo) {
 		return customerDao.getIdUsuario(correo);
 	}
