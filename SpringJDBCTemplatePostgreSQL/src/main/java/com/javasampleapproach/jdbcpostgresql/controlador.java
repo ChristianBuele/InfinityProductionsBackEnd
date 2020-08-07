@@ -163,6 +163,7 @@ public int idImagenMaximo() {
  public ResponseEntity<String> Login(@RequestBody usuario usuario){
 		System.out.println("entra a loguear usuario en post "+usuario);
 		usuario x=servicio.existeUsuario(usuario.getCorreo_usuario());
+		System.out.println(x);
 		System.out.println("llega el usuario "+x.getCorreo_usuario()+" con estado:"+x.getEstado()+":");
 		String j=x.getEstado();
 		if(x!=null) {
