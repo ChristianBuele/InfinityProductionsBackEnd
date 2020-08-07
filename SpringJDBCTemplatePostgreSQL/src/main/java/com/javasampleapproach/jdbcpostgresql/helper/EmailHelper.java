@@ -45,7 +45,7 @@ public class EmailHelper
 			msg.setSentDate(new Date());
 
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent("I am not feeling well, So I am taking leave today",
+			messageBodyPart.setContent("Muchas gracias por su compra. Saludos",
 					"text/html");
 
 			Multipart multipart = new MimeMultipart();
