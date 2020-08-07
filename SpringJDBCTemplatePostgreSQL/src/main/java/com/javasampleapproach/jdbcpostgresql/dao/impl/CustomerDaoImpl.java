@@ -267,7 +267,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 
 
 	@Override
-	public boolean existeUsuario(String correo) {
+	public usuario existeUsuario(String correo) {
 		String sql = "SELECT * from usuario where correo_usuario = ?";
 		System.out.println("la consulta es "+sql+"correo "+correo );
 		try {
@@ -277,23 +277,27 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 				usuario cus=new usuario();
 				cus.setCorreo_usuario(rs.getString("correo_usuario"));
 				cus.setEstado(rs.getString("estado"));
-				System.out.println("encontrando");
+				System.out.println("encontrando"+cus.getCorreo_usuario());
+				
 				return cus;
 			}
 		});
-		System.out.println("el estado encontrado es "+us.getEstado());
-		if(us.getEstado().equals("activo")) {
-			System.out.println("El usuario encontrado "+correo+" esta activo");
-			return true;
-		}
-		System.out.println("El usuario encontrado "+correo+" no esta activoo");
-		return false;
+		
+		return us;
 		}catch(Exception EmptyResultDataAccessException ) {
-			return false;
+			return null;
 		}
 		
 	}
-
+public boolean vale(String s) {
+	if(s.equalsIgnoreCase("activo")) {
+		System.out.println("no enetra"+s);
+		return true;
+	}else {
+		System.out.println("estado "+s);
+		return false;
+	}
+}
 	@Override
 	public boolean contraseniaCorrecta(String correo,String contra) {
 		String sql = "SELECT contrasenia_usuario from usuario where correo_usuario = ?";

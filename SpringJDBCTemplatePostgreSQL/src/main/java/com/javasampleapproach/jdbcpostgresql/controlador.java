@@ -131,11 +131,12 @@ public class controlador {
  @PostMapping("usuario/")
  public ResponseEntity<String> agregarUsuarioPruebapost(@RequestBody usuario usuario){
 		System.out.println("entra a agregar usuario en post "+usuario);
-		if(!servicio.existeUsuario(usuario.getCorreo_usuario())) {
+		if(servicio.existeUsuario(usuario.getCorreo_usuario())!=null) {
 			usuario.setId_carrito(crearCarrito());
 			usuario ingresado=servicio.insertarUsuario(usuario);
 			int id=servicio.getIdUsuario(usuario.getCorreo_usuario());
 			if(ingresado!=null) {
+				
 				 return ResponseEntity.ok("true,"+id);
 			}else {
 				 return ResponseEntity.ok("A ocurrido un error al registrar, Intente de nuevo");
@@ -161,11 +162,17 @@ public int idImagenMaximo() {
  @PostMapping("login/")
  public ResponseEntity<String> Login(@RequestBody usuario usuario){
 		System.out.println("entra a loguear usuario en post "+usuario);
-		if(servicio.existeUsuario(usuario.getCorreo_usuario())) {//si el correo del usuario esta en la base de datos
-			if(servicio.contraseniaCorrecta(usuario.getCorreo_usuario(), usuario.getContrasenia_usuario())) { ///verfica que la contrase;a sea correcta
+		usuario x=servicio.existeUsuario(usuario.getCorreo_usuario());
+		System.out.println("llega el usuario "+x.getCorreo_usuario()+" con estado:"+x.getEstado()+":");
+		String j=x.getEstado();
+		if(x!=null) {
+System.out.println(x.getEstado().compareTo(j));
+			if(x.getEstado().compareTo("activo")==0) {
+				
+				System.out.println("comparando estado "+x.getEstado()+" bien");
 				return ResponseEntity.ok("Bienvenido");
 			}else {
-				return ResponseEntity.ok("Revise los datos");
+				return ResponseEntity.ok("Usuario "+x.getEstado());
 			}
 		}else {//si no existe el correo
 			return ResponseEntity.ok("No existe usuario");

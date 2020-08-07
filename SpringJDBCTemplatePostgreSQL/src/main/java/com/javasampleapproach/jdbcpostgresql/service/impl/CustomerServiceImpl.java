@@ -145,7 +145,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public boolean existeUsuario(String correo) {
+	public usuario existeUsuario(String correo) {
 		
 		return customerDao.existeUsuario(correo);
 		

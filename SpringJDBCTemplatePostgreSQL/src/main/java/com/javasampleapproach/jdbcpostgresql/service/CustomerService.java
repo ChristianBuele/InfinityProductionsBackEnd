@@ -19,7 +19,7 @@ public interface CustomerService {
 	productos ingresarProducto(productos producto);
 	void insertarImagen(ImageModel image);
 	ImageModel cargarImagen(String id);
-	boolean existeUsuario(String correo);
+	usuario existeUsuario(String correo);
 	boolean contraseniaCorrecta(String correo,String contra);
 	factura insertarFactura(factura factura);
 	venta insertarVenta(venta venta);
