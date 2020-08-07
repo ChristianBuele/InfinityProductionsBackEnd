@@ -30,13 +30,14 @@ public class GenerarFactura extends Thread {
 
 
 
-	public void run() {
+	public String enviarFactura() {
 		System.out.println("Generando factura");
 	    ListarEventosPdf x=new ListarEventosPdf();
 	    nomArchivo=x.factura(listaProductos, listaPresets);
 	    mail m=new mail(correo,nomArchivo);
-	   m.sendCorreo();
-	    System.out.print("PDF GUARDADO");
+	  
+	    System.out.print("PDF GUARDADO con nomre "+nomArchivo);
+	    return nomArchivo;
 	}
 
 	

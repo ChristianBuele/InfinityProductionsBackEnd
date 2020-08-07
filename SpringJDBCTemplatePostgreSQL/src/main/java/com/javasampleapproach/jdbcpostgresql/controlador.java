@@ -18,6 +18,8 @@ import java.util.zip.Inflater;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
+
+import com.javasampleapproach.jdbcpostgresql.helper.EmailHelper;
 import com.javasampleapproach.jdbcpostgresql.model.*;
 import com.javasampleapproach.jdbcpostgresql.util.ListarEventosPdf;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -50,6 +52,8 @@ public class controlador {
  CustomerService servicio;
  @Autowired
  private JavaMailSender sender;
+ @Autowired
+ private EmailHelper emailHelper;
  @GetMapping(value="listar/")
  public ResponseEntity<List<Customer>> getEmployees() {
 	 System.out.println("si  eentra");
@@ -473,7 +477,8 @@ public ResponseEntity<String> getIdUsuario(@PathVariable("correo") String correo
 	    
 	    
 		GenerarFactura fact=new GenerarFactura(listaProductos,listaPresets,correo);
-		fact.start();
+		String nom=fact.enviarFactura();
+		this.emailHelper.sendEmail(correo, nom);
 		
 	}
 	
