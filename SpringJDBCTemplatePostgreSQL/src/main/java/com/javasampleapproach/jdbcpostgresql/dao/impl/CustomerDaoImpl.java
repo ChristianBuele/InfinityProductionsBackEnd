@@ -269,7 +269,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao, Seri
 	@Override
 	public boolean existeUsuario(String correo) {
 		String sql = "SELECT correo_usuario from usuario where correo_usuario = ?";
-		System.out.println("la consulta es "+sql+"correo" );
+		System.out.println("la consulta es "+sql+"correo "+correo );
 		try {
 		usuario us=(usuario)getJdbcTemplate().queryForObject(sql, new Object[]{correo}, new RowMapper<usuario>(){
 			@Override
