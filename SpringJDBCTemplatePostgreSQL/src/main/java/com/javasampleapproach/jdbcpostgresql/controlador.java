@@ -131,7 +131,7 @@ public class controlador {
  @PostMapping("usuario/")
  public ResponseEntity<String> agregarUsuarioPruebapost(@RequestBody usuario usuario){
 		System.out.println("entra a agregar usuario en post "+usuario);
-		if(servicio.existeUsuario(usuario.getCorreo_usuario())!=null) {
+		if(servicio.existeUsuario(usuario.getCorreo_usuario())==null) {
 			usuario.setId_carrito(crearCarrito());
 			usuario ingresado=servicio.insertarUsuario(usuario);
 			int id=servicio.getIdUsuario(usuario.getCorreo_usuario());
