@@ -33,11 +33,11 @@ public class EmailHelper
 			{
 				protected PasswordAuthentication getPasswordAuthentication()
 				{
-					return new PasswordAuthentication("christian97.erik@gmail.com", "Mary0105211783");
+					return new PasswordAuthentication("infinityproductions1997@gmail.com", "Buele0997549512");
 				}
 			});
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("christian97.erik@gmail.com", false));
+			msg.setFrom(new InternetAddress("infinityproductions1997@gmail.com", false));
 
 			msg.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(correo));
